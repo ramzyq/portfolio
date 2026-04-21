@@ -1,10 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState } from "react";
 import { OWNER, SKILL_GROUPS } from "@/data";
 import { SectionHeading } from "./SectionHeading";
 
 export function About() {
+  const [imageFailed, setImageFailed] = useState(false);
+
   return (
     <section id="about" className="section" aria-labelledby="about-heading">
       <div className="container-px mx-auto max-w-content">
@@ -34,12 +38,28 @@ export function About() {
                 className="absolute -inset-5 rounded-full border border-dashed border-teal/40"
                 aria-hidden="true"
               />
-              <div
-                role="img"
-                aria-label={`${OWNER.fullName} avatar`}
-                className="relative flex h-56 w-56 items-center justify-center rounded-full bg-gradient-to-br from-accent/15 to-teal/15 font-heading text-6xl font-bold tracking-tight text-[var(--foreground)]"
-              >
-                {OWNER.initials}
+              <div className="relative h-56 w-56 overflow-hidden rounded-full bg-gradient-to-br from-accent/15 to-teal/15">
+                {imageFailed ? (
+                  <div
+                    role="img"
+                    aria-label={`${OWNER.fullName} avatar`}
+                    className="flex h-full w-full items-center justify-center font-heading text-6xl font-bold tracking-tight text-[var(--foreground)]"
+                  >
+                    {OWNER.initials}
+                  </div>
+                ) : (
+                  <Image
+                    src="/og-image.jpg"
+                    alt={`${OWNER.fullName} portrait`}
+                    fill
+                    sizes="672px"
+                    quality={100}
+                    priority
+                    className="scale-125 object-cover"
+                    style={{ objectPosition: "center 20%" }}
+                    onError={() => setImageFailed(true)}
+                  />
+                )}
               </div>
             </div>
 

@@ -123,8 +123,6 @@ export const PROJECTS: ProjectType[] = [
       "A personal penetration testing lab built on virtual machines for hands-on practice with ethical hacking, vulnerability research, and reporting.",
     stack: ["Kali Linux", "Metasploitable 2", "DVWA", "VirtualBox"],
     status: "Ongoing",
-    github: "#",
-    demo: "#",
   },
   {
     slug: "makersplace-robotics",
@@ -137,31 +135,7 @@ export const PROJECTS: ProjectType[] = [
 ];
 
 export const EXPERIENCE: ExperienceType[] = [
-  {
-    title: "Competition Facilitator & Coach",
-    organization: "Makersplace Robotics",
-    period: "2023 — Present",
-    description:
-      "Facilitated First Lego League and World Robot Olympiad events across Ghana. Mentored student teams in robotics design, programming, and presentation.",
-    kind: "work",
-  },
-  {
-    title: "President",
-    organization: "Pioneer Robotics Club, Achimota School",
-    period: "2021 — 2023",
-    description:
-      "Led the club through its most competitive years. Organized training sessions and managed team logistics for national and international competitions.",
-    kind: "work",
-  },
-  {
-    title: "BSc Information Technology",
-    organization: "University of Ghana",
-    period: "2025 — Present",
-    description:
-      "Coursework: Computer Organization & Architecture, Digital Logic, Databases, Automata Theory, Academic Writing, Cybersecurity.",
-    kind: "education",
-  },
-  {
+   {
     title: "WASSCE",
     organization: "Achimota School",
     period: "2021 — 2024",
@@ -169,6 +143,32 @@ export const EXPERIENCE: ExperienceType[] = [
       "Completed secondary education with a focus on science. Served as president of the Pioneer Robotics Club.",
     kind: "education",
   },
+   {
+    title: "President",
+    organization: "Pioneer Robotics Club, Achimota School",
+    period: "2023 — 2024",
+    description:
+      "Led the club through its most competitive years. Organized training sessions and managed team logistics for national and international competitions.",
+    kind: "work",
+  },
+  {
+    title: "Competition Facilitator & Coach",
+    organization: "Makersplace Robotics",
+    period: "2025 — Present",
+    description:
+      "Facilitated First Lego League and World Robot Olympiad events across Ghana. Mentored student teams in robotics design, programming, and presentation.",
+    kind: "work",
+  },
+ 
+  {
+    title: "BSc Information Technology",
+    organization: "University of Ghana",
+    period: "2025 — Present",
+    description:
+      "Coursework: Computer Organization & Architecture, Digital Logic, Databases, Cybersecurity.",
+    kind: "education",
+  },
+ 
 ];
 
 export const ACHIEVEMENTS: AchievementType[] = [

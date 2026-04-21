@@ -12,8 +12,9 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { OWNER } from "@/data";
+import { OWNER, SOCIAL_LINKS } from "@/data";
 import { cn } from "@/lib/utils";
+import { XIcon } from "./icons/XIcon";
 import { SectionHeading } from "./SectionHeading";
 
 type ContactFormValues = {
@@ -102,14 +103,23 @@ export function Contact() {
               <ContactDetail
                 icon={Github}
                 label="GitHub"
-                value="github.com/ramzy"
-                href="#"
+                value={stripProtocol(getSocialHref("GitHub"))}
+                href={getSocialHref("GitHub")}
+                external
               />
               <ContactDetail
                 icon={Linkedin}
                 label="LinkedIn"
-                value="linkedin.com/in/ramzy"
-                href="#"
+                value={stripProtocol(getSocialHref("LinkedIn"))}
+                href={getSocialHref("LinkedIn")}
+                external
+              />
+              <ContactDetail
+                icon={XIcon}
+                label="X"
+                value={stripProtocol(getSocialHref("X"))}
+                href={getSocialHref("X")}
+                external
               />
             </div>
           </div>
@@ -260,15 +270,18 @@ function ContactDetail({
   label,
   value,
   href,
+  external = false,
 }: {
-  icon: typeof Mail;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
   value: string;
   href: string;
+  external?: boolean;
 }) {
   return (
     <Link
       href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="flex items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-colors hover:border-accent"
     >
       <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
@@ -282,6 +295,14 @@ function ContactDetail({
       </div>
     </Link>
   );
+}
+
+function getSocialHref(label: string) {
+  return SOCIAL_LINKS.find((s) => s.label === label)?.href ?? "#";
+}
+
+function stripProtocol(url: string) {
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 }
 
 function FormField({
