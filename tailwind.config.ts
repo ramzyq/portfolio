@@ -29,6 +29,12 @@ const config: Config = {
           500: "#14B8A6",
           600: "#0D9488",
         },
+        green: {
+          DEFAULT: "#22c55e",
+          400: "#4ade80",
+          500: "#22c55e",
+          600: "#16a34a",
+        },
         surface: {
           light: "#FFFFFF",
           "light-alt": "#F8FAFC",

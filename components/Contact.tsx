@@ -131,7 +131,7 @@ export function Contact() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             onSubmit={handleSubmit(onSubmit)}
             noValidate
-            className="card space-y-5 p-7 md:p-8"
+            className="card-elevated space-y-6 p-8 md:p-9"
             aria-label="Contact form"
           >
             <FormField

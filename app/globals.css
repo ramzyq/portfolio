@@ -89,6 +89,18 @@
   .link-underline {
     @apply relative inline-block after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-all hover:after:w-full;
   }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent to-teal bg-clip-text text-transparent;
+  }
+
+  .section-label {
+    @apply flex items-center gap-2 border-l-2 border-accent pl-3 text-xs font-medium uppercase tracking-[0.16em] text-accent;
+  }
+
+  .card-elevated {
+    @apply relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm transition-all hover:border-accent/50 hover:shadow-lg hover:shadow-accent/20;
+  }
 }
 
 .dot-grid {

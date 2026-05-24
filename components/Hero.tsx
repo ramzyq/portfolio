@@ -1,11 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { OWNER, ROLE_ROTATION, SOCIAL_LINKS } from "@/data";
 import { XIcon } from "./icons/XIcon";
+import { MagneticLink } from "./MagneticButton";
+import { Particles } from "./Particles";
 
 const SOCIAL_ICON_MAP = {
   GitHub: Github,
@@ -16,134 +17,166 @@ const SOCIAL_ICON_MAP = {
 
 export function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setRoleIndex((i) => (i + 1) % ROLE_ROTATION.length);
-    }, 2600);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="hero"
       aria-label="Introduction"
-      className="relative flex min-h-[100svh] items-center overflow-hidden pt-24"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-[var(--background)]"
     >
-      <div className="pointer-events-none absolute inset-0 dot-grid mask-fade" aria-hidden="true" />
+      {/* Animated spotlight glow */}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute -z-10 rounded-full blur-3xl"
+        style={{
+          width: 500,
+          height: 500,
+          background: `radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%)`,
+          top: "-10%",
+          right: "-5%",
+        }}
+        animate={{
+          opacity: [0.5, 0.8, 0.5],
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+        }}
+      />
 
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <motion.div
-          className="absolute left-[8%] top-[18%] h-24 w-24 rounded-3xl border border-accent/30"
-          animate={{ y: [0, -18, 0], rotate: [0, 8, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute right-[10%] top-[24%] h-16 w-16 rounded-full border border-teal/40"
-          animate={{ y: [0, 14, 0], x: [0, -6, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-[18%] left-[14%] h-20 w-20 rotate-45 border border-accent/20"
-          animate={{ rotate: [45, 55, 45], y: [0, -10, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-[22%] right-[18%] h-12 w-12 rounded-full bg-accent/10"
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
+      {/* Particles Canvas Layer */}
+      <div className="absolute inset-0 -z-20">
+        <Particles />
       </div>
 
-      <div className="container-px relative mx-auto w-full max-w-content">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="eyebrow mb-6"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-          {OWNER.location} · Available for work
-        </motion.div>
+      {/* Main content container */}
+      <div className="container-px relative z-10 w-full max-w-5xl">
 
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05, ease: "easeOut" }}
-          className="heading-xl max-w-4xl"
-        >
-          {OWNER.fullName}
-        </motion.h1>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-2xl font-medium text-[var(--foreground)]/80 md:text-3xl"
-        >
-          <span className="text-[var(--muted)]">I'm a</span>
-          <span className="relative inline-flex h-[1.3em] overflow-hidden">
+        {/* Centered content */}
+        <div className="text-center">
+          {/* Role indicator with animation */}
+          <motion.div
+            className="mb-12 min-h-[2.5rem] flex items-center justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <AnimatePresence mode="wait">
-              <motion.span
-                key={ROLE_ROTATION[roleIndex]}
-                initial={{ y: "100%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                exit={{ y: "-100%", opacity: 0 }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block font-heading font-semibold text-accent"
+              <motion.div
+                key={roleIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center gap-2"
               >
-                {ROLE_ROTATION[roleIndex]}
-              </motion.span>
+                <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-r from-accent to-teal" />
+                <span className="text-lg md:text-xl font-semibold tracking-wide text-accent">
+                  {ROLE_ROTATION[roleIndex]}
+                </span>
+              </motion.div>
             </AnimatePresence>
-          </span>
-        </motion.div>
+          </motion.div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.32, ease: "easeOut" }}
-          className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--muted)] md:text-lg"
-        >
-          {OWNER.bioShort}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.42, ease: "easeOut" }}
-          className="mt-10 flex flex-wrap items-center gap-3"
-        >
-          <Link href="#projects" className="btn-primary">
-            View My Work
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-          <Link href="#contact" className="btn-secondary">
-            Get In Touch
-          </Link>
-        </motion.div>
-
-        <motion.ul
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 flex items-center gap-2"
-          aria-label="Social links"
-        >
-          {SOCIAL_LINKS.map((social) => {
-            const Icon = SOCIAL_ICON_MAP[social.label as keyof typeof SOCIAL_ICON_MAP];
-            return (
-              <li key={social.label}>
-                <Link
-                  href={social.href}
-                  aria-label={social.label}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--foreground)] transition-colors hover:border-accent hover:text-accent"
+          {/* Large staggered name */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.3 }} className="mb-8">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.05] tracking-tighter">
+              {OWNER.fullName.split("").map((char, idx) => (
+                <motion.span
+                  key={idx}
+                  initial={{ opacity: 0, y: 50, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.4 + idx * 0.04,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="inline-block"
                 >
-                  <Icon className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </li>
-            );
-          })}
-        </motion.ul>
+                  {char === " " ? " " : char}
+                </motion.span>
+              ))}
+            </h1>
+
+            {/* Animated accent line */}
+            <motion.div
+              className="mt-6 h-1.5 w-24 mx-auto bg-gradient-to-r from-accent via-teal to-green rounded-full"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              style={{ originX: 0.5 }}
+            />
+          </motion.div>
+
+          {/* Tagline with gradient */}
+          <motion.p
+            className="text-lg sm:text-xl md:text-2xl font-semibold gradient-text mb-14 max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+          >
+            {OWNER.tagline}
+          </motion.p>
+
+          {/* CTA buttons */}
+          <motion.div
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.1 }}
+          >
+            <MagneticLink href="#projects">
+              <button className="btn-primary px-8 py-3 text-base md:text-lg">
+                View My Work
+              </button>
+            </MagneticLink>
+            <MagneticLink href="#contact">
+              <button className="btn-secondary px-8 py-3 text-base md:text-lg">
+                Get In Touch
+              </button>
+            </MagneticLink>
+          </motion.div>
+
+          {/* Social icons */}
+          <motion.ul
+            className="flex items-center justify-center gap-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.3 }}
+            aria-label="Social links"
+          >
+            {SOCIAL_LINKS.map((social, idx) => {
+              const Icon = SOCIAL_ICON_MAP[social.label as keyof typeof SOCIAL_ICON_MAP];
+              return (
+                <motion.li
+                  key={social.label}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 1.4 + idx * 0.08 }}
+                  whileHover={{ y: -3 }}
+                >
+                  <a
+                    href={social.href}
+                    aria-label={social.label}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-accent/40 text-foreground transition-all hover:border-accent hover:bg-accent/10 hover:text-accent"
+                  >
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </a>
+                </motion.li>
+              );
+            })}
+          </motion.ul>
+        </div>
       </div>
     </section>
   );

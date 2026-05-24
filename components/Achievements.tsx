@@ -4,6 +4,12 @@ import { motion } from "framer-motion";
 import { ACHIEVEMENTS } from "@/data";
 import { SectionHeading } from "./SectionHeading";
 
+const GRADIENT_BACKGROUNDS = [
+  "from-blue-500/10 to-blue-600/5",
+  "from-teal-500/10 to-teal-600/5",
+  "from-purple-500/10 to-purple-600/5",
+];
+
 export function Achievements() {
   return (
     <section
@@ -21,41 +27,47 @@ export function Achievements() {
           description="A snapshot of competitions where our teams placed on the international stage."
         />
 
-        <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.ul
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {ACHIEVEMENTS.map((achievement, index) => {
             const Icon = achievement.icon;
+            const bgGradient = GRADIENT_BACKGROUNDS[index % GRADIENT_BACKGROUNDS.length];
+
             return (
               <motion.li
                 key={achievement.event}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{
                   duration: 0.5,
-                  delay: index * 0.1,
+                  delay: index * 0.08,
                   ease: "easeOut",
                 }}
-                className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-7 transition-all hover:-translate-y-1 hover:border-accent"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className={`group relative overflow-hidden rounded-2xl border border-[var(--border)] bg-gradient-to-br ${bgGradient} p-8 transition-all hover:border-accent/50`}
               >
-                <span
-                  className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-accent via-accent to-teal"
-                  aria-hidden="true"
-                />
-
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
-                  <Icon className="h-6 w-6" aria-hidden="true" />
+                {/* Icon container with gradient circle */}
+                <div className="relative inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-accent/20 to-teal/10 text-accent">
+                  <Icon className="h-7 w-7" aria-hidden="true" />
                 </div>
 
-                <h3 className="mt-6 font-heading text-lg font-semibold tracking-tight">
+                {/* Content */}
+                <h3 className="mt-6 font-heading text-base md:text-lg font-semibold tracking-tight leading-snug">
                   {achievement.title}
                 </h3>
-                <p className="mt-2 text-sm text-[var(--muted)]">
+                <p className="mt-3 text-sm text-muted">
                   {achievement.event}
                 </p>
               </motion.li>
             );
           })}
-        </ul>
+        </motion.ul>
       </div>
     </section>
   );

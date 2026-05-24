@@ -41,6 +41,13 @@ export type SocialLinkType = {
 
 export type RoleRotationType = string[];
 
+export type StatType = {
+  value: number;
+  suffix?: string;
+  label: string;
+  caption: string;
+};
+
 export const OWNER = {
   fullName: "Konde Ramzy Gbati",
   shortName: "Ramzy",
@@ -53,7 +60,7 @@ export const OWNER = {
     "I'm an IT student and builder focused on shipping things that work for real people — not demos.",
   bioLong: [
     "I'm Konde Ramzy Gbati — an IT student at the University of Ghana and a builder who works across mobile development, product design, cybersecurity, and STEM education.",
-    "I don't vibe-code. I understand every line I ship. I care about building things that work for real people, not things that only look good in a pitch deck. That principle shows up whether I'm wiring up a Flutter screen, designing a user flow, or setting up a pentest lab.",
+    "I build with purpose—every decision is grounded in solving real problems. Whether shipping mobile apps, designing user experiences, or securing systems, I prioritize what works in production over what looks good in presentations. This approach spans Flutter development, product design, penetration testing, and everything in between.",
     "Outside of building, I coach robotics teams across Ghana and help students discover engineering through First Lego League and World Robot Olympiad. Teaching sharpens the way I think — if I can't explain it simply, I don't understand it yet.",
   ],
 } as const;
@@ -156,7 +163,7 @@ export const EXPERIENCE: ExperienceType[] = [
     organization: "Makersplace Robotics",
     period: "2025 — Present",
     description:
-      "Facilitated First Lego League and World Robot Olympiad events across Ghana. Mentored student teams in robotics design, programming, and presentation.",
+      "Facilitated First Lego League, AI for Good and World Robot Olympiad events across Ghana. Mentored student teams in robotics design, programming, and presentation.",
     kind: "work",
   },
  
@@ -186,6 +193,31 @@ export const ACHIEVEMENTS: AchievementType[] = [
     title: "9th Place",
     event: "World Robot Olympiad (WRO)",
     icon: Award,
+  },
+];
+
+export const STATS: StatType[] = [
+  {
+    value: 3,
+    label: "International placements",
+    caption: "FLL Nationals, RoboFest, World Robot Olympiad",
+  },
+  {
+    value: 100,
+    suffix: "+",
+    label: "Students mentored",
+    caption: "Across robotics camps and competition seasons",
+  },
+  {
+    value: 4,
+    label: "Disciplines I work across",
+    caption: "Mobile, design, security, education",
+  },
+  {
+    value: 12,
+    suffix: "+",
+    label: "Robotics events",
+    caption: "Coached, judged, or facilitated since 2022",
   },
 ];
 

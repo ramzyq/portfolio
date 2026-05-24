@@ -57,7 +57,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
         scrolled
-          ? "border-b border-[var(--border)] bg-[var(--background)]/70 backdrop-blur-xl"
+          ? "border-b border-[var(--border)] bg-[var(--background)]/70 backdrop-blur-xl shadow-sm shadow-accent/10"
           : "border-b border-transparent"
       )}
     >
@@ -65,13 +65,15 @@ export function Navbar() {
         aria-label="Primary"
         className="container-px mx-auto flex h-16 max-w-content items-center justify-between"
       >
-        <Link
-          href="#"
-          className="font-heading text-xl font-bold tracking-tight text-[var(--foreground)] transition-colors hover:text-accent"
-        >
-          {OWNER.shortName}
-          <span className="text-accent">.</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="#"
+            className="font-heading text-xl font-bold tracking-tight text-[var(--foreground)] transition-colors hover:text-accent"
+          >
+            {OWNER.shortName}
+            <span className="text-accent">.</span>
+          </Link>
+        </div>
 
         <ul className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => {
@@ -104,6 +106,21 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              window.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "k", metaKey: true })
+              );
+            }}
+            className="hidden items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs text-[var(--muted)] transition-colors hover:border-accent hover:text-accent md:inline-flex"
+            aria-label="Open command palette"
+          >
+            <span>Search</span>
+            <kbd className="inline-flex items-center gap-0.5 rounded border border-[var(--border)] bg-[var(--background)] px-1 py-0.5 font-mono text-[10px] text-[var(--foreground)]/80">
+              ⌘K
+            </kbd>
+          </button>
           <ThemeToggle />
           <button
             type="button"
