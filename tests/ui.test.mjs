@@ -74,3 +74,49 @@ test("home intro renders the pill, split headline, and copy-email CTA", async ()
     assert.equal(await page.$eval("main", (el) => getComputedStyle(el).paddingTop), "24px");
   });
 });
+
+test("home renders nine cards in a responsive 3/2/1 gallery", async () => {
+  for (const [width, expected] of [
+    [1440, 3],
+    [768, 2],
+    [390, 1],
+  ]) {
+    await withPage("/", { width, height: 900 }, async (page) => {
+      assert.equal(
+        await page.$$eval('[data-testid="gallery-card"]', (els) => els.length),
+        9
+      );
+      const columns = await page.$eval('[data-testid="gallery-grid"]', (el) =>
+        getComputedStyle(el).gridTemplateColumns.split(" ").length
+      );
+      assert.equal(columns, expected);
+      assert.equal(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth + 1
+        ),
+        true
+      );
+    });
+  }
+  await withPage("/", { width: 1440, height: 960 }, async (page) => {
+    assert.equal(
+      await page.$eval('a[aria-label^="TraderWise"]', (el) => el.getAttribute("href")),
+      "https://github.com/ramzyq/traderwise"
+    );
+    assert.equal(
+      await page.$eval('a[aria-label^="Home Lab"]', (el) => el.getAttribute("href")),
+      "/built"
+    );
+    assert.equal(
+      await page.$eval('a[aria-label^="STEM education"]', (el) => el.getAttribute("href")),
+      "/learn"
+    );
+    assert.equal(
+      await page.$$eval(
+        '[data-testid="gallery-card"] [data-cover][aria-hidden="true"]',
+        (els) => els.length
+      ),
+      9
+    );
+  });
+});

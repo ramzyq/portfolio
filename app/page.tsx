@@ -1,9 +1,43 @@
-import Link from "next/link";
 import { HireButton } from "@/components/site/HireButton";
+import { GalleryCard } from "@/components/site/GalleryCard";
+import { GalleryGrid } from "@/components/site/GalleryGrid";
 import { PageIntro } from "@/components/site/PageIntro";
-import { Rail } from "@/components/site/Rail";
-import { WorkCard } from "@/components/site/WorkCard";
-import { ACHIEVEMENTS, OWNER, PROJECTS } from "@/data";
+import { ProjectCover } from "@/components/site/ProjectCover";
+import type { ArchiveKind } from "@/data";
+import { ARCHIVE, OWNER, PROJECTS } from "@/data";
+import { projectHref } from "@/lib/projects";
+
+const ARCHIVE_ART: Record<
+  ArchiveKind,
+  { from: string; to: string; ink: string; stat: string; label: string }
+> = {
+  fll: { from: "#fde68a", to: "#fef3c7", ink: "#7c2d12", stat: "3rd", label: "FLL Nationals" },
+  robofest: { from: "#ddd6fe", to: "#ede9fe", ink: "#4c1d95", stat: "8th", label: "RoboFest" },
+  wro: { from: "#bae6fd", to: "#e0f2fe", ink: "#075985", stat: "9th", label: "WRO" },
+  stem: { from: "#d9f99d", to: "#f7fee7", ink: "#3f6212", stat: "100+", label: "students mentored" },
+  events: { from: "#fbcfe8", to: "#fdf2f8", ink: "#9d174d", stat: "12+", label: "robotics events" },
+};
+
+function ArchiveCover({ kind }: { kind: ArchiveKind }) {
+  const art = ARCHIVE_ART[kind];
+
+  return (
+    <div
+      className="flex h-full w-full flex-col justify-between p-[8%]"
+      style={{ background: `linear-gradient(160deg, ${art.from} 0%, ${art.to} 100%)` }}
+    >
+      <p className="text-[clamp(12px,2.6vw,15px)] font-medium" style={{ color: art.ink }}>
+        {art.label}
+      </p>
+      <p
+        className="text-[clamp(40px,9vw,76px)] font-medium leading-none tracking-[-0.05em]"
+        style={{ color: art.ink }}
+      >
+        {art.stat}
+      </p>
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -12,60 +46,30 @@ export default function HomePage() {
         <HireButton />
       </PageIntro>
 
-      <section aria-label="Selected projects" className="pb-10">
-        <Rail>
+      <div className="mt-11">
+        <GalleryGrid>
           {PROJECTS.map((project) => (
-            <WorkCard key={project.slug} project={project} />
+            <GalleryCard
+              key={project.slug}
+              href={projectHref(project)}
+              name={project.name}
+              caption={project.tagline}
+              external={Boolean(project.github ?? project.demo)}
+            >
+              <ProjectCover project={project} />
+            </GalleryCard>
           ))}
-        </Rail>
-      </section>
-
-      <section aria-label="Highlights" className="pb-8">
-        <Rail>
-          {ACHIEVEMENTS.map((item) => (
-            <article key={item.title} className="w-[260px] shrink-0 md:w-[300px]">
-              <div
-                className="relative aspect-[1.05/1] overflow-hidden rounded-[1.65rem] p-6"
-                style={{
-                  background: `linear-gradient(165deg, ${item.cover.from}, ${item.cover.to})`,
-                }}
-              >
-                <item.icon className="h-5 w-5 text-ink/50" aria-hidden="true" />
-                <p className="mt-16 text-3xl font-medium tracking-[-0.04em] text-ink">
-                  {item.caption}
-                </p>
-                <p className="mt-2 max-w-[12rem] text-sm text-ink/60">{item.event}</p>
-              </div>
-              <div className="mt-3 px-0.5">
-                <p className="text-[14px] font-medium text-ink">{item.title}</p>
-                <p className="mt-0.5 text-[13px] text-muted">From the competition archive</p>
-              </div>
-            </article>
+          {ARCHIVE.map((item) => (
+            <GalleryCard
+              key={item.kind}
+              href={item.href}
+              name={item.name}
+              caption={item.caption}
+            >
+              <ArchiveCover kind={item.kind} />
+            </GalleryCard>
           ))}
-          <Link href="/learn" className="w-[260px] shrink-0 md:w-[300px]">
-            <div className="relative flex aspect-[1.05/1] flex-col justify-between overflow-hidden rounded-[1.65rem] bg-[#f3f0ea] p-6">
-              <p className="text-sm text-muted">100+ students</p>
-              <p className="text-[1.65rem] font-medium leading-tight tracking-[-0.04em] text-ink">
-                Mentoring teams until the idea clicks.
-              </p>
-            </div>
-            <div className="mt-3 px-0.5">
-              <p className="text-[14px] font-medium text-ink">STEM education</p>
-              <p className="mt-0.5 text-[13px] text-muted">Workshops, camps, and clubs</p>
-            </div>
-          </Link>
-        </Rail>
-      </section>
-
-      <div className="page-shell pt-0">
-        <div className="flex justify-end">
-          <Link
-            href="/contact"
-            className="text-[13px] text-muted transition-colors hover:text-ink"
-          >
-            Leave a note ↗
-          </Link>
-        </div>
+        </GalleryGrid>
       </div>
     </main>
   );
