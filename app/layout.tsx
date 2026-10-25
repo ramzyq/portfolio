@@ -1,18 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Outfit } from "next/font/google";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Inter } from "next/font/google";
+import { Dock } from "@/components/site/Dock";
+import { FixedFooter } from "@/components/site/FixedFooter";
 import { OWNER } from "@/data";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -45,20 +40,14 @@ export const metadata: Metadata = {
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
     siteName: `${OWNER.shortName} · Portfolio`,
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: `${OWNER.fullName} — ${OWNER.tagline}`,
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
-    images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   robots: {
     index: true,
@@ -67,10 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
-  ],
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
@@ -81,26 +67,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${inter.variable} ${outfit.variable}`}
-    >
-      <body className="font-sans">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
+    <html lang="en" className={inter.variable}>
+      <body className={`${inter.className} bg-white text-ink antialiased`}>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:text-white"
-          >
-            Skip to content
-          </a>
-          {children}
-        </ThemeProvider>
+          Skip to content
+        </a>
+        <div className="min-h-screen pb-[190px] md:pb-[140px]">{children}</div>
+        <FixedFooter />
+        <Dock />
       </body>
     </html>
   );
