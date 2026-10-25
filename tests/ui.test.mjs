@@ -152,3 +152,38 @@ test("covers are image-free, correctly proportioned, and do not overflow", async
     assert.ok(coverStates.every(({ overflowY }) => overflowY <= 1));
   });
 });
+
+test("about page renders the timeline, skills, and contact link", async () => {
+  await withPage("/about", { width: 1440, height: 960 }, async (page) => {
+    assert.match(await page.$eval("h1", (el) => el.textContent), /I build with purpose/);
+    assert.equal(
+      await page.$$eval('[data-testid="timeline-bar"]', (els) => els.length),
+      4
+    );
+    assert.equal(
+      await page.$$eval(
+        '[data-testid="timeline-bar"][data-current="true"]',
+        (els) => els.length
+      ),
+      1
+    );
+    assert.equal(
+      await page.$$eval('[data-testid="skill-group"]', (els) => els.length),
+      5
+    );
+    assert.match(
+      await page.$eval('[data-testid="interwebs-link"]', (el) =>
+        el.getAttribute("href")
+      ),
+      /\/contact/
+    );
+  });
+  await withPage("/about", { width: 390, height: 900 }, async (page) => {
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth + 1
+      ),
+      true
+    );
+  });
+});
