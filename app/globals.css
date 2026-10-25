@@ -66,7 +66,7 @@
   }
 
   .headline {
-    @apply mx-auto text-center text-[1.65rem] leading-[1.3] tracking-[-0.025em] text-ink md:text-[2rem];
+    @apply mx-auto text-center text-[26px] leading-[1.32] tracking-[-0.02em] text-ink md:text-[32px] md:leading-[1.3] md:tracking-[-0.025em];
     font-weight: 450;
   }
 
