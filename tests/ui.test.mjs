@@ -187,3 +187,25 @@ test("about page renders the timeline, skills, and contact link", async () => {
     );
   });
 });
+
+test("built page renders four linked project rows", async () => {
+  await withPage("/built", { width: 1440, height: 960 }, async (page) => {
+    assert.match(await page.$eval("h1", (el) => el.textContent), /Ideas I couldn’t/);
+    assert.match(
+      await page.$eval('[data-section="projects"]', (el) => el.textContent),
+      /4 projects/
+    );
+    assert.equal(
+      await page.$$eval('[data-testid="list-row"]', (els) => els.length),
+      4
+    );
+    assert.equal(
+      await page.$$eval('[data-testid="list-row"] a[href]', (els) => els.length),
+      4
+    );
+    assert.equal(
+      await page.$$eval('[data-testid="list-row"] svg', (els) => els.length >= 4),
+      true
+    );
+  });
+});
