@@ -120,3 +120,35 @@ test("home renders nine cards in a responsive 3/2/1 gallery", async () => {
     );
   });
 });
+
+test("covers are image-free, correctly proportioned, and do not overflow", async () => {
+  await withPage("/", { width: 1440, height: 960 }, async (page) => {
+    assert.equal(await page.$$eval('[data-testid="gallery-card"] img', (els) => els.length), 0);
+    const covers = await page.$$eval('[data-cover]', (els) =>
+      els.map((el) => {
+        const r = el.getBoundingClientRect();
+        return {
+          ratio: r.width / r.height,
+          overflowX: el.scrollWidth - el.clientWidth,
+          overflowY: el.scrollHeight - el.clientHeight,
+        };
+      })
+    );
+    assert.equal(covers.length, 9);
+    for (const { ratio, overflowX, overflowY } of covers) {
+      assert.ok(Math.abs(ratio - 1.15) < 0.03, `ratio ${ratio}`);
+      assert.ok(overflowX <= 1, `cover horizontal overflow ${overflowX}`);
+      assert.ok(overflowY <= 1, `cover vertical overflow ${overflowY}`);
+    }
+  });
+  await withPage("/", { width: 390, height: 900 }, async (page) => {
+    const coverStates = await page.$$eval('[data-cover]', (els) =>
+      els.map((el) => ({
+        overflowX: el.scrollWidth - el.clientWidth,
+        overflowY: el.scrollHeight - el.clientHeight,
+      }))
+    );
+    assert.ok(coverStates.every(({ overflowX }) => overflowX <= 1));
+    assert.ok(coverStates.every(({ overflowY }) => overflowY <= 1));
+  });
+});
