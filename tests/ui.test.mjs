@@ -209,3 +209,28 @@ test("built page renders four linked project rows", async () => {
     );
   });
 });
+
+test("learn page renders the library and experience lists without dead links", async () => {
+  await withPage("/learn", { width: 1440, height: 960 }, async (page) => {
+    assert.equal(
+      await page.$$eval(
+        '[data-section="library"] [data-testid="list-row"]',
+        (els) => els.length
+      ),
+      5
+    );
+    assert.equal(
+      await page.$$eval(
+        '[data-section="experience"] [data-testid="list-row"]',
+        (els) => els.length
+      ),
+      4
+    );
+    assert.match(
+      await page.$eval('[data-section="experience"]', (el) => el.textContent),
+      /Coursework:/
+    );
+    assert.equal(await page.$$eval('a[href=""]', (els) => els.length), 0);
+    assert.equal(await page.$$eval('a[href="#"]', (els) => els.length), 0);
+  });
+});

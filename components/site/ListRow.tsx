@@ -5,6 +5,7 @@ export function ListRow({
   href,
   title,
   caption,
+  description,
   meta,
   thumbnail,
   arrow = Boolean(href),
@@ -12,6 +13,7 @@ export function ListRow({
   href?: string;
   title: string;
   caption: string;
+  description?: string;
   meta?: string;
   thumbnail?: React.ReactNode;
   arrow?: boolean;
@@ -37,6 +39,11 @@ export function ListRow({
         <p className="mt-1 line-clamp-2 text-[13px] leading-[19px] text-body">
           {caption}
         </p>
+        {description ? (
+          <p className="mt-2 line-clamp-3 text-[14px] leading-[22px] text-body">
+            {description}
+          </p>
+        ) : null}
       </div>
       {arrow ? (
         <ArrowUpRight
