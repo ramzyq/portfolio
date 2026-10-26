@@ -33,8 +33,25 @@ export async function launchBrowser() {
   });
 }
 
+let sharedBrowser = null;
+
+async function getBrowser() {
+  if (!sharedBrowser || !sharedBrowser.connected) {
+    sharedBrowser = await launchBrowser();
+  }
+  return sharedBrowser;
+}
+
+export async function closeBrowser() {
+  if (sharedBrowser) {
+    const browser = sharedBrowser;
+    sharedBrowser = null;
+    await browser.close().catch(() => {});
+  }
+}
+
 export async function withPage(pathname, viewport, fn) {
-  const browser = await launchBrowser();
+  const browser = await getBrowser();
   const page = await browser.newPage();
   page.__errors = [];
   page.on("console", (message) => {
@@ -54,6 +71,6 @@ export async function withPage(pathname, viewport, fn) {
     await new Promise((resolve) => setTimeout(resolve, 400));
     return await fn(page);
   } finally {
-    await browser.close();
+    await page.close();
   }
 }
