@@ -20,8 +20,14 @@ export function Timeline() {
       aria-label="Career timeline"
       className="mx-auto mt-16 w-full max-w-[780px] px-5"
     >
-      <div className="overflow-x-auto pb-2">
-        <div className="min-w-[640px] sm:min-w-[740px]">
+      <div
+        dir="rtl"
+        role="group"
+        tabIndex={0}
+        className="hide-scrollbar overflow-x-auto pb-2"
+        aria-label="Scrollable timeline; scroll left for earlier roles"
+      >
+        <div dir="ltr" className="min-w-[640px] sm:min-w-[740px]">
           <div className="grid grid-cols-7 text-center text-[11px] text-body">
             {TIMELINE_YEARS.map((year) => (
               <span key={year}>{year}</span>
@@ -34,7 +40,7 @@ export function Timeline() {
             {EXPERIENCE.map((item) => {
               const left = leftPct(item.start);
               const width = Math.min(
-                Math.max(widthPct(item.start, item.end), 22),
+                Math.max(widthPct(item.start, item.end), 30),
                 100 - left
               );
               const isPrimaryCurrent = item.organization === primaryCurrent;
