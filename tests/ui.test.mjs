@@ -189,6 +189,17 @@ test("about page renders the timeline, skills, and contact link", async () => {
       ),
       true
     );
+    assert.equal(
+      await page.$eval(
+        '[data-testid="timeline-bar"][data-current="true"]',
+        (el) => {
+          const bar = el.getBoundingClientRect();
+          return bar.left >= 0 && bar.right <= window.innerWidth + 1;
+        }
+      ),
+      true,
+      "current role should be visible without scrolling the timeline"
+    );
   });
 });
 
@@ -286,5 +297,53 @@ test("contact page renders the email card, social grid, and working form", async
       ),
       true
     );
+  });
+});
+
+const ROUTES = ["/", "/about", "/built", "/learn", "/contact"];
+const WIDTHS = [320, 390, 768, 1024, 1440];
+
+test("no page overflows horizontally at any target width", async () => {
+  for (const route of ROUTES) {
+    for (const width of WIDTHS) {
+      await withPage(route, { width, height: 900 }, async (page) => {
+        assert.equal(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth + 1
+          ),
+          true,
+          `${route} at ${width}px`
+        );
+      });
+    }
+  }
+});
+
+test("all pages load without console or page errors", async () => {
+  for (const route of ROUTES) {
+    await withPage(route, { width: 1440, height: 960 }, async (page) => {
+      assert.deepEqual(page.__errors, [], route);
+      assert.equal(
+        await page.$$eval("a, button", (els) =>
+          els.filter(
+            (el) => !el.textContent.trim() && !el.getAttribute("aria-label")
+          ).length
+        ),
+        0,
+        `unnamed control on ${route}`
+      );
+    });
+  }
+});
+
+test("keyboard focus starts at the skip link with a visible outline", async () => {
+  await withPage("/", { width: 1440, height: 960 }, async (page) => {
+    await page.keyboard.press("Tab");
+    const focused = await page.evaluate(() => ({
+      text: document.activeElement?.textContent ?? "",
+      outline: getComputedStyle(document.activeElement).outlineStyle,
+    }));
+    assert.match(focused.text, /Skip to content/);
+    assert.notEqual(focused.outline, "none");
   });
 });
