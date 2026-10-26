@@ -1,6 +1,10 @@
-import test from "node:test";
+import test, { after } from "node:test";
 import assert from "node:assert/strict";
-import { withPage } from "./helpers.mjs";
+import { closeBrowser, withPage } from "./helpers.mjs";
+
+after(async () => {
+  await closeBrowser();
+});
 
 test("shell renders the dock, footer, and live clock on every page", async () => {
   await withPage("/", { width: 1440, height: 960 }, async (page) => {
@@ -232,5 +236,55 @@ test("learn page renders the library and experience lists without dead links", a
     );
     assert.equal(await page.$$eval('a[href=""]', (els) => els.length), 0);
     assert.equal(await page.$$eval('a[href="#"]', (els) => els.length), 0);
+  });
+});
+
+test("contact page renders the email card, social grid, and working form", async () => {
+  await withPage("/contact", { width: 1440, height: 960 }, async (page) => {
+    assert.match(
+      await page.$eval("h1", (el) => el.textContent),
+      /Have something in mind/
+    );
+    assert.match(
+      await page.$eval('[data-testid="email-card"]', (el) => el.textContent),
+      /konderamzy30@gmail\.com/
+    );
+    assert.equal(
+      await page.$$eval('[data-testid="social-link"]', (els) => els.length),
+      4
+    );
+    assert.equal(await page.$$eval("form input", (els) => els.length), 3);
+    assert.equal(await page.$$eval("form textarea", (els) => els.length), 1);
+    await page.evaluate(() => {
+      window.__copied = "";
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: {
+          writeText: async (text) => {
+            window.__copied = text;
+          },
+        },
+      });
+    });
+    await page.click('[data-testid="email-card"] button');
+    await page.waitForFunction(() =>
+      document
+        .querySelector('[data-testid="email-card"] button')
+        ?.textContent?.includes("Email copied")
+    );
+    assert.equal(await page.evaluate(() => window.__copied), "konderamzy30@gmail.com");
+    await page.click('form button[type="submit"]');
+    await page.waitForFunction(() =>
+      document.body.textContent.includes("Please enter your name.")
+    );
+    assert.match(await page.$eval("form", (el) => el.textContent), /Please enter your email\./);
+  });
+  await withPage("/contact", { width: 390, height: 900 }, async (page) => {
+    assert.equal(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth + 1
+      ),
+      true
+    );
   });
 });
