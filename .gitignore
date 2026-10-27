@@ -5,6 +5,10 @@
 
 # testing
 /coverage
+/tests/screenshots
+
+# superpowers scratch
+/.superpowers/
 
 # next.js
 /.next/

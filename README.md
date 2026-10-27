@@ -2,21 +2,21 @@
 
 A production-ready portfolio site for **Konde Ramzy Gbati** — builder, designer, and STEM educator.
 
-Built with Next.js 14 (App Router), Tailwind CSS, Framer Motion, and the Resend API for contact-form email delivery.
+Built with Next.js 14 (App Router), Tailwind CSS, Inter, and the Resend API for contact-form email delivery.
 
 ---
 
 ## Stack
 
 - **Framework** — Next.js 14 (App Router, TypeScript)
-- **Styling** — Tailwind CSS v3 with a custom accent palette
-- **Animations** — Framer Motion
+- **Styling** — Tailwind CSS v3 with CSS design tokens
 - **Icons** — Lucide React
-- **Fonts** — Inter (body) + Outfit (headings), via `next/font`
-- **Theme** — `next-themes` (dark default, light toggle)
+- **Fonts** — Inter, via `next/font`
+- **Theme** — Light editorial palette (`#242424` ink on white)
 - **Forms** — React Hook Form + client-side validation
 - **Email** — Resend (server route at `app/api/contact/route.ts`)
 - **Hosting** — Vercel
+- **Tests** — Node's test runner + `puppeteer-core`
 
 ---
 
@@ -68,33 +68,46 @@ npm run start
 .
 ├── app/
 │   ├── api/contact/route.ts     Resend email handler
+│   ├── about/page.tsx           About + career timeline
+│   ├── built/page.tsx           Project list
+│   ├── contact/page.tsx         Email card, social links, form
+│   ├── learn/page.tsx           Achievements + experience list
 │   ├── globals.css              Tailwind layers + design tokens
-│   ├── layout.tsx               Metadata, fonts, theme provider
-│   └── page.tsx                 Home page (composes every section)
+│   ├── layout.tsx               Metadata, font, dock, fixed footer
+│   └── page.tsx                 Home gallery
 ├── components/
-│   ├── About.tsx
-│   ├── Achievements.tsx
-│   ├── Contact.tsx
-│   ├── Experience.tsx
-│   ├── Footer.tsx
-│   ├── Hero.tsx
-│   ├── Navbar.tsx
-│   ├── Projects.tsx
-│   ├── SectionHeading.tsx
-│   ├── ThemeProvider.tsx
-│   └── ThemeToggle.tsx
+│   └── site/                    Live shell and page components
+│       ├── Dock.tsx             Fixed bottom navigation
+│       ├── FixedFooter.tsx      Fixed identity/location bar
+│       ├── PageIntro.tsx        Badge, headline, subtitle
+│       ├── GalleryGrid.tsx      Home card grid
+│       ├── GalleryCard.tsx      Card image, label, arrow
+│       ├── ProjectCover.tsx     Original CSS/SVG project art
+│       ├── ListSection.tsx      Shared list column
+│       ├── ListRow.tsx          Shared list row
+│       ├── Timeline.tsx         About career timeline
+│       ├── EmailCard.tsx        Copy-email surface
+│       └── ContactForm.tsx      Working contact form
 ├── data/
 │   └── index.ts                 All site content as typed constants
 ├── lib/
-│   └── utils.ts
+│   ├── projects.ts              Project link resolution
+│   └── utils.ts                 Class-name helpers
+├── tests/
+│   ├── helpers.mjs              Shared browser harness
+│   └── ui.test.mjs              Responsive, a11y, and content tests
+├── scripts/capture.mjs          Screenshot capture
 ├── public/
 │   ├── favicon.svg
-│   └── OG-IMAGE-PLACEHOLDER.md  Drop a 1200×630 `og-image.png` here
+│   └── og-image.jpg
 ├── tailwind.config.ts
-├── next.config.ts
+├── next.config.mjs
 ├── vercel.json
 └── README.md
 ```
+
+Root-level components from the earlier design are still in the repository but are
+not mounted; the live site imports everything from `components/site`.
 
 ---
 
@@ -117,7 +130,48 @@ Each export is strictly typed, so TypeScript will flag missing or malformed fiel
 
 ### OG / share image
 
-`app/layout.tsx` references `/og-image.png` (1200 × 630). Drop your PNG into [`public/og-image.png`](./public) and delete the placeholder note.
+`public/og-image.jpg` is available for social previews. The layout currently sets
+OpenGraph title and description only; add an `images` entry in `app/layout.tsx`
+if you want the image included.
+
+---
+
+## Design QA
+
+The visual layer is covered by browser tests against a running dev server.
+
+```bash
+# terminal 1
+npm run dev
+
+# terminal 2
+npm run test:ui
+```
+
+`npm run test:ui` checks all five routes at 320, 390, 768, 1024, and 1440px for
+horizontal overflow, console/page errors, accessible control names, and visible
+skip-link focus. It also covers page content and the contact form.
+
+The suite uses `puppeteer-core` with an installed Chrome or Edge. It searches
+common install paths; set `CHROME_PATH` if your browser lives elsewhere:
+
+```powershell
+$env:CHROME_PATH = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+```
+
+Set `BASE_URL` to test a different server (defaults to `http://localhost:3000`).
+
+To refresh the ten review screenshots at 1440×960 and 390×844:
+
+```bash
+npm run capture
+```
+
+Captures are written to `tests/screenshots/` and are not committed.
+
+The dev-only webpack filesystem cache is disabled in `next.config.mjs` to avoid
+a Windows heap limit during long dev sessions. Production builds keep Next's
+default cache.
 
 ---
 
@@ -160,12 +214,14 @@ Add the same env vars through `vercel env add` or the dashboard.
 
 ## Scripts
 
-| Command          | What it does                      |
-| ---------------- | --------------------------------- |
-| `npm run dev`    | Start the dev server              |
-| `npm run build`  | Production build                  |
-| `npm run start`  | Serve the production build        |
-| `npm run lint`   | Run ESLint (`next lint`)          |
+| Command           | What it does                                         |
+| ----------------- | ---------------------------------------------------- |
+| `npm run dev`     | Start the dev server                                 |
+| `npm run build`   | Production build                                     |
+| `npm run start`   | Serve the production build                           |
+| `npm run lint`    | Run ESLint (`next lint`)                             |
+| `npm run test:ui` | Browser tests (requires the dev server)              |
+| `npm run capture` | Write review screenshots to `tests/screenshots/`     |
 
 ---
 

@@ -1,41 +1,43 @@
-"use client";
-
-import { About } from "@/components/About";
-import { Achievements } from "@/components/Achievements";
-import { BackToTop } from "@/components/BackToTop";
-import { CommandPalette } from "@/components/CommandPalette";
-import { ConsoleSignature } from "@/components/ConsoleSignature";
-import { Contact } from "@/components/Contact";
-import { CursorGlow } from "@/components/CursorGlow";
-import { Experience } from "@/components/Experience";
-import { Footer } from "@/components/Footer";
-import { Hero } from "@/components/Hero";
-import { Konami } from "@/components/Konami";
-import { Navbar } from "@/components/Navbar";
-import { Projects } from "@/components/Projects";
-import { ScrollProgress } from "@/components/ScrollProgress";
-import { Stats } from "@/components/Stats";
+import { HireButton } from "@/components/site/HireButton";
+import { GalleryCard } from "@/components/site/GalleryCard";
+import { GalleryGrid } from "@/components/site/GalleryGrid";
+import { PageIntro } from "@/components/site/PageIntro";
+import { ProjectCover, ArchiveCover } from "@/components/site/ProjectCover";
+import { ARCHIVE, OWNER, PROJECTS } from "@/data";
+import { projectHref } from "@/lib/projects";
 
 export default function HomePage() {
   return (
-    <>
-      <ScrollProgress />
-      <CursorGlow />
-      <CommandPalette />
-      <Konami />
-      <ConsoleSignature />
-      <Navbar />
-      <main id="main">
-        <Hero />
-        <About />
-        <Stats />
-        <Projects />
-        <Experience />
-        <Achievements />
-        <Contact />
-      </main>
-      <Footer />
-      <BackToTop />
-    </>
+    <main id="main" className="pt-6 md:pt-[46px]">
+      <PageIntro lead={OWNER.headlineLead} mute={OWNER.headlineMute}>
+        <HireButton />
+      </PageIntro>
+
+      <div className="mt-11">
+        <GalleryGrid>
+          {PROJECTS.map((project) => (
+            <GalleryCard
+              key={project.slug}
+              href={projectHref(project)}
+              name={project.name}
+              caption={project.tagline}
+              external={Boolean(project.github ?? project.demo)}
+            >
+              <ProjectCover project={project} />
+            </GalleryCard>
+          ))}
+          {ARCHIVE.map((item) => (
+            <GalleryCard
+              key={item.kind}
+              href={item.href}
+              name={item.name}
+              caption={item.caption}
+            >
+              <ArchiveCover kind={item.kind} />
+            </GalleryCard>
+          ))}
+        </GalleryGrid>
+      </div>
+    </main>
   );
 }
