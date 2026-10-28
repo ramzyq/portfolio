@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { ArrowUpRight } from "./icons";
 
 const LINES = [
@@ -78,23 +78,27 @@ export function TaglineReveal() {
         {LINES.map((line, lineIndex) => (
           <span key={line} className="block">
             {line.split(" ").map((word, wordIndex) => (
-              <span
-                key={`${lineIndex}-${wordIndex}`}
-                data-word
-                className="opacity-30 transition-opacity duration-500 ease-smooth motion-reduce:opacity-100 data-[active=true]:opacity-100"
-              >
-                {word}{" "}
-              </span>
+              <Fragment key={`${lineIndex}-${wordIndex}`}>
+                <span
+                  data-word
+                  className="inline-block translate-y-0.5 opacity-30 blur-[1.5px] transition-[opacity,transform,filter] duration-500 ease-smooth motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-0 data-[active=true]:translate-y-0 data-[active=true]:opacity-100 data-[active=true]:blur-0"
+                >
+                  {word}
+                </span>{" "}
+              </Fragment>
             ))}
           </span>
         ))}
       </p>
       <a
         href="/contact"
-        className="mt-8 inline-flex items-center gap-2 text-base font-semibold text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline active:opacity-70"
+        className="group mt-8 inline-flex items-center gap-2 text-base font-semibold text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline active:opacity-70"
       >
         Start a conversation
-        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        <ArrowUpRight
+          className="h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
       </a>
     </section>
   );

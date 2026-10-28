@@ -30,10 +30,13 @@ export default function ContactPage() {
           <span>Prefer a conversation?</span>
           <a
             href={`mailto:${OWNER.email}`}
-            className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline active:opacity-70"
+            className="group inline-flex shrink-0 items-center gap-1 text-sm font-medium text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline active:opacity-70"
           >
             Send a mail
-            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </a>
         </div>
       </Reveal>

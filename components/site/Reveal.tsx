@@ -46,8 +46,10 @@ export function Reveal({
       data-reveal
       data-shown={shown ? "true" : "false"}
       className={cn(
-        "transition-[transform,opacity] duration-700 ease-smooth motion-reduce:transition-none",
-        shown ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
+        "transition-[transform,opacity,filter] duration-700 ease-smooth motion-reduce:transition-none",
+        shown
+          ? "translate-y-0 scale-100 opacity-100 blur-0"
+          : "translate-y-8 scale-[0.985] opacity-0 blur-[2px]",
         className
       )}
     >

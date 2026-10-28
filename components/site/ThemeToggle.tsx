@@ -21,12 +21,18 @@ export function ThemeToggle() {
       title={label}
       data-testid="theme-toggle"
       data-theme-mode={mounted ? resolvedTheme : "pending"}
-      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/55 transition-colors duration-300 ease-smooth hover:bg-white/5 hover:text-white active:bg-white/10 focus-visible:outline-white/80"
+      className="group inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-white/55 transition-colors duration-300 ease-smooth hover:bg-white/5 hover:text-white active:bg-white/10 focus-visible:outline-white/80"
     >
       {isDark ? (
-        <Sun className="h-4 w-4" aria-hidden="true" />
+        <Sun
+          className="icon-pop h-4 w-4 transition-transform duration-500 ease-smooth group-hover:rotate-[24deg] group-hover:scale-110"
+          aria-hidden="true"
+        />
       ) : (
-        <Moon className="h-4 w-4" aria-hidden="true" />
+        <Moon
+          className="icon-pop h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-rotate-12 group-hover:scale-110"
+          aria-hidden="true"
+        />
       )}
     </button>
   );

@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CursorGlow } from "@/components/site/CursorGlow";
 import { Dock } from "@/components/site/Dock";
 import { FixedFooter } from "@/components/site/FixedFooter";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
 import { ThemeColorSync } from "@/components/site/ThemeColorSync";
 import { OWNER } from "@/data";
 import "./globals.css";
@@ -95,10 +97,12 @@ export default function RootLayout({
           aria-hidden="true"
           className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         >
-          <div className="ambient-orb ambient-orb-a" />
-          <div className="ambient-orb ambient-orb-b" />
-          <div className="ambient-orb ambient-orb-c" />
+          <div className="ambient-orb ambient-orb-a orb-drift-a" />
+          <div className="ambient-orb ambient-orb-b orb-drift-b" />
+          <div className="ambient-orb ambient-orb-c orb-drift-c" />
         </div>
+        <CursorGlow />
+        <ScrollProgress />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

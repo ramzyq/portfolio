@@ -18,7 +18,7 @@ export function LinkList({ links }: { links: SocialLinkType[] }) {
             >
               {link.label}
               <ArrowUpRight
-                className="h-4 w-4 text-soft transition-transform duration-300 ease-smooth group-hover:translate-x-0.5 group-hover:text-ink motion-reduce:transition-none"
+                className="h-4 w-4 text-soft transition-[transform,color] duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink motion-reduce:transition-none"
                 aria-hidden="true"
               />
             </a>

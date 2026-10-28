@@ -29,18 +29,21 @@ export function Timeline() {
       >
         <div dir="ltr" className="min-w-[640px] sm:min-w-[732px]">
           <div className="relative h-4">
-            {TIMELINE_YEARS.map((year) => {
+            {TIMELINE_YEARS.map((year, index) => {
               const isLastYear =
                 year === TIMELINE_YEARS[TIMELINE_YEARS.length - 1];
+              const style: React.CSSProperties & Record<"--i", number> = {
+                ...(isLastYear
+                  ? { right: "0%" }
+                  : { left: `${leftPct(year)}%` }),
+                "--i": index,
+              };
+
               return (
                 <span
                   key={year}
-                  className="absolute text-xs text-body"
-                  style={
-                    isLastYear
-                      ? { right: "0%" }
-                      : { left: `${leftPct(year)}%` }
-                  }
+                  className="timeline-year-anim absolute text-xs text-body"
+                  style={style}
                 >
                   {year}
                 </span>
@@ -51,7 +54,7 @@ export function Timeline() {
           <div className="mt-4 border-t border-line" />
 
           <div className="relative mt-6 space-y-3">
-            {EXPERIENCE.map((item) => {
+            {EXPERIENCE.map((item, index) => {
               const left = leftPct(item.start);
               const width = Math.min(
                 Math.max(widthPct(item.start, item.end), 30),
@@ -65,12 +68,18 @@ export function Timeline() {
                     data-testid="timeline-bar"
                     data-current={isPrimaryCurrent ? "true" : undefined}
                     className={cn(
-                      "absolute flex h-12 items-center justify-between gap-2 overflow-hidden rounded-full px-3",
+                      "timeline-bar-anim absolute flex h-12 items-center justify-between gap-2 overflow-hidden rounded-full px-3",
                       isPrimaryCurrent
                         ? "bg-ink text-background"
                         : "bg-surface text-body"
                     )}
-                    style={{ left: `${left}%`, width: `${width}%` }}
+                    style={
+                      {
+                        left: `${left}%`,
+                        width: `${width}%`,
+                        "--i": index,
+                      } as React.CSSProperties
+                    }
                   >
                     <span className="min-w-0">
                       <span className="block truncate text-xs font-medium leading-4">
@@ -87,10 +96,17 @@ export function Timeline() {
                     </span>
                     <span
                       className={cn(
-                        "shrink-0 text-xs",
+                        "flex shrink-0 items-center gap-1.5 text-xs",
                         isPrimaryCurrent ? "text-background/70" : "text-body"
                       )}
                     >
+                      {isPrimaryCurrent ? (
+                        <span
+                          aria-hidden="true"
+                          data-testid="timeline-now-dot"
+                          className="timeline-now-dot"
+                        />
+                      ) : null}
                       {item.current ? "Now" : `${item.start}–${item.end}`}
                     </span>
                   </div>

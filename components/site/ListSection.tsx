@@ -18,7 +18,7 @@ export function ListSection({
         <span>{label}</span>
         {count ? <span>{count}</span> : null}
       </div>
-      <ul className="border-t border-line">{children}</ul>
+      <ul className="stagger-list border-t border-line">{children}</ul>
     </section>
   );
 }

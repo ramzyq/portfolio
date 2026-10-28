@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { ArrowUpRight } from "./icons";
 
 type ContactFormValues = {
   name: string;
@@ -83,12 +85,33 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex rounded-full bg-ink px-3 py-2 text-base font-semibold text-background transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98] disabled:opacity-60"
+        className="btn-shine group inline-flex items-center gap-2 rounded-full bg-ink px-3 py-2 text-base font-semibold text-background transition-[transform,background-color,box-shadow] duration-500 ease-smooth hover:-translate-y-0.5 hover:bg-ink/90 hover:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.55)] active:translate-y-0 active:scale-[0.98] disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
       >
-        {isSubmitting ? "Sending…" : "Send a note"}
+        <span>{isSubmitting ? "Sending…" : "Send a note"}</span>
+        {isSubmitting ? (
+          <span
+            aria-hidden="true"
+            className="form-spinner h-4 w-4 rounded-full border-2 border-background/35 border-t-background"
+          />
+        ) : (
+          <ArrowUpRight
+            className="h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        )}
       </button>
       {status ? (
-        <p role="status" aria-live="polite" className="text-sm text-body">
+        <p
+          key={status}
+          role="status"
+          aria-live="polite"
+          className={cn(
+            "status-pop text-sm",
+            status.startsWith("Message sent")
+              ? "text-emerald-600 dark:text-emerald-400"
+              : "text-body"
+          )}
+        >
           {status}
         </p>
       ) : null}
@@ -110,7 +133,10 @@ function Field({
       <span className="mb-2 block text-xs text-body">{label}</span>
       {children}
       {error ? (
-        <span role="alert" className="mt-1 block text-xs text-red-500">
+        <span
+          role="alert"
+          className="field-error mt-1 block text-xs text-red-500"
+        >
           {error}
         </span>
       ) : null}
