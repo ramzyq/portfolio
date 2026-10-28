@@ -31,6 +31,10 @@ export function CursorGlow() {
     };
 
     const hide = () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+        frame = 0;
+      }
       glow.dataset.active = "false";
     };
 

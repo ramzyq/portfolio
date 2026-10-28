@@ -85,6 +85,25 @@ test("shell adds route entry, progress, cursor glow, and drifting light", async 
         document.querySelector('[data-testid="cursor-glow"]')?.dataset
           .active === "true"
     );
+    await page.evaluate(() => {
+      window.dispatchEvent(
+        new PointerEvent("pointermove", {
+          clientX: 640,
+          clientY: 480,
+          bubbles: true,
+          pointerType: "mouse",
+        })
+      );
+      window.dispatchEvent(new Event("blur"));
+    });
+    await new Promise((resolve) => setTimeout(resolve, 120));
+    assert.equal(
+      await page.$eval(
+        '[data-testid="cursor-glow"]',
+        (el) => el.dataset.active
+      ),
+      "false"
+    );
     assert.deepEqual(page.__errors, []);
   });
 });
@@ -138,10 +157,10 @@ test("hero, gallery, and tagline respond with playful motion", async () => {
         behavior: "instant",
       })
     );
-    await page.waitForFunction(() =>
-      document.querySelector('[data-word][data-active="true"]')
-    );
-    await new Promise((resolve) => setTimeout(resolve, 650));
+    await page.waitForFunction(() => {
+      const el = document.querySelector('[data-word][data-active="true"]');
+      return el && Number(getComputedStyle(el).opacity) >= 0.99;
+    });
     const activeWord = await page.$eval(
       '[data-word][data-active="true"]',
       (el) => ({
@@ -150,7 +169,7 @@ test("hero, gallery, and tagline respond with playful motion", async () => {
       })
     );
     assert.notEqual(activeWord.transform, "none");
-    assert.equal(activeWord.opacity, "1");
+    assert.ok(Number(activeWord.opacity) >= 0.99);
     assert.deepEqual(page.__errors, []);
   });
 });

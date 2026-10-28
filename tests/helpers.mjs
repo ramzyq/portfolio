@@ -50,7 +50,12 @@ export async function closeBrowser() {
   }
 }
 
-export async function withPage(pathname, viewport, fn, { expectStatus } = {}) {
+export async function withPage(
+  pathname,
+  viewport,
+  fn,
+  { expectStatus, colorScheme } = {}
+) {
   const browser = await getBrowser();
   const page = await browser.newPage();
   page.__errors = [];
@@ -60,6 +65,11 @@ export async function withPage(pathname, viewport, fn, { expectStatus } = {}) {
   page.on("pageerror", (error) => page.__errors.push(String(error)));
 
   await page.setViewport(viewport);
+  if (colorScheme) {
+    await page.emulateMediaFeatures([
+      { name: "prefers-color-scheme", value: colorScheme },
+    ]);
+  }
   try {
     const response = await page.goto(`${BASE_URL}${pathname}`, {
       waitUntil: "networkidle2",

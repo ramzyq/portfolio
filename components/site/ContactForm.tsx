@@ -102,17 +102,18 @@ export function ContactForm() {
       </button>
       {status ? (
         <p
-          key={status}
           role="status"
           aria-live="polite"
           className={cn(
-            "status-pop text-sm",
+            "text-sm",
             status.startsWith("Message sent")
-              ? "text-emerald-600 dark:text-emerald-400"
+              ? "text-emerald-700 dark:text-emerald-400"
               : "text-body"
           )}
         >
-          {status}
+          <span key={status} className="status-pop inline-block">
+            {status}
+          </span>
         </p>
       ) : null}
     </form>

@@ -2,6 +2,37 @@ import test, { after } from "node:test";
 import assert from "node:assert/strict";
 import { closeBrowser, withPage } from "./helpers.mjs";
 
+function parseRgb(color) {
+  return color
+    .match(/[\d.]+/g)
+    .slice(0, 3)
+    .map(Number);
+}
+
+function relativeLuminance([red, green, blue]) {
+  const channel = (value) => {
+    const normalized = value / 255;
+    return normalized <= 0.03928
+      ? normalized / 12.92
+      : ((normalized + 0.055) / 1.055) ** 2.4;
+  };
+  return (
+    0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue)
+  );
+}
+
+function contrastRatio(foreground, background) {
+  const lighter = Math.max(
+    relativeLuminance(foreground),
+    relativeLuminance(background)
+  );
+  const darker = Math.min(
+    relativeLuminance(foreground),
+    relativeLuminance(background)
+  );
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
 after(async () => {
   await closeBrowser();
 });
@@ -324,6 +355,89 @@ test("contact page renders the email card, social grid, and working form", async
       true
     );
   });
+});
+
+test("contact success stays in one live region and meets contrast", async () => {
+  await withPage(
+    "/contact",
+    { width: 1440, height: 960 },
+    async (page) => {
+      await page.waitForFunction(() => {
+        const form = document.querySelector("form");
+        return (
+          form &&
+          Object.keys(form).some((key) => key.startsWith("__reactProps$"))
+        );
+      });
+      await page.waitForFunction(
+        () => !document.documentElement.classList.contains("dark")
+      );
+
+      const fillForm = async () => {
+        await page.type('input[autocomplete="name"]', "Test Person");
+        await page.type('input[type="email"]', "test@example.com");
+        await page.type('form input[autocomplete="off"]', "Hello there");
+        await page.type(
+          "form textarea",
+          "This message is long enough to pass validation."
+        );
+      };
+
+      await page.evaluate(() => {
+        window.fetch = async () =>
+          new Response(JSON.stringify({ ok: true }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+      });
+      await fillForm();
+      await page.click('form button[type="submit"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[role="status"]')
+          ?.textContent?.includes("Message sent")
+      );
+
+      const state = await page.evaluate(() => {
+        const status = document.querySelector('[role="status"]');
+        status.dataset.probe = "first";
+        const style = getComputedStyle(status);
+        return {
+          color: style.color,
+          background: getComputedStyle(document.body).backgroundColor,
+        };
+      });
+      assert.ok(
+        contrastRatio(parseRgb(state.color), parseRgb(state.background)) >= 4.5,
+        `success message contrast for ${state.color} on ${state.background}`
+      );
+
+      await page.waitForFunction(
+        () => !document.querySelector('form button[type="submit"]').disabled
+      );
+      await page.evaluate(() => {
+        window.fetch = async () =>
+          new Response(JSON.stringify({ error: "Mock failure" }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
+      });
+      await fillForm();
+      await page.click('form button[type="submit"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[role="status"]')
+          ?.textContent?.includes("Mock failure")
+      );
+      assert.equal(
+        await page.$eval('[role="status"]', (el) => el.dataset.probe),
+        "first",
+        "live region should persist when the message changes"
+      );
+      assert.deepEqual(page.__errors, []);
+    },
+    { colorScheme: "light" }
+  );
 });
 
 test("unknown routes render the branded 404 and privacy is linked from the footer", async () => {
