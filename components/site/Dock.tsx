@@ -23,7 +23,7 @@ export function Dock() {
       <nav
         aria-label="Main navigation"
         data-testid="dock"
-        className="pointer-events-auto w-80 max-w-[calc(100vw-32px)] rounded-3xl bg-dock/90 p-1 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_8px_24px_rgba(0,0,0,0.125),0_2px_6px_rgba(0,0,0,0.08)] backdrop-blur-md"
+        className="pointer-events-auto w-80 max-w-[calc(100vw-32px)] rounded-3xl border border-white/10 bg-dock/75 p-1 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_18px_50px_rgba(0,0,0,0.22),0_2px_6px_rgba(0,0,0,0.08)] backdrop-blur-xl backdrop-saturate-150"
       >
         <div className="flex items-center gap-1 rounded-t-2xl border-b border-white/10 pl-1 pr-0.5">
           <span aria-hidden="true" className="h-8 w-8 shrink-0" />

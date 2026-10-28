@@ -17,6 +17,11 @@
     --headline-from: #000000;
     --headline-to: #666666;
     --headline-mute: #8e8e93;
+    --glass-highlight: rgba(255, 255, 255, 0.75);
+    --wash-a: 187 247 208;
+    --wash-b: 191 219 254;
+    --wash-c: 233 213 255;
+    --wash-opacity: 0.35;
     color-scheme: light;
   }
 
@@ -34,6 +39,11 @@
     --headline-from: #ffffff;
     --headline-to: #9b9b9b;
     --headline-mute: #8e8e93;
+    --glass-highlight: rgba(255, 255, 255, 0.08);
+    --wash-a: 52 211 153;
+    --wash-b: 96 165 250;
+    --wash-c: 192 132 252;
+    --wash-opacity: 0.16;
     color-scheme: dark;
   }
 
@@ -110,11 +120,57 @@
   }
 
   .pill {
-    @apply inline-flex min-h-10 items-center gap-2 rounded-full border border-line bg-background px-3 py-2 text-xs leading-4 text-body;
+    @apply inline-flex min-h-10 items-center gap-2 rounded-full border px-3 py-2 text-xs leading-4 text-body;
+    border-color: rgb(var(--line) / 0.8);
+    background-color: rgb(var(--background) / 0.55);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
 
   .dock {
-    @apply pointer-events-auto flex items-center gap-1 rounded-full bg-dock/90 px-2 py-2 text-sm text-white/60 shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-md;
+    @apply pointer-events-auto flex items-center gap-1 rounded-full bg-dock/75 px-2 py-2 text-sm text-white/60 shadow-[0_18px_50px_rgba(0,0,0,0.22)] backdrop-blur-xl backdrop-saturate-150;
+  }
+
+  .glass-panel {
+    background-color: rgb(var(--surface) / 0.6);
+    border: 1px solid rgb(var(--line) / 0.8);
+    box-shadow:
+      inset 0 1px 0 var(--glass-highlight),
+      0 18px 40px -28px rgb(0 0 0 / 0.35);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+  }
+
+  .ambient-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(96px);
+    opacity: var(--wash-opacity);
+  }
+
+  .ambient-orb-a {
+    left: -10rem;
+    top: -12rem;
+    height: 32rem;
+    width: 32rem;
+    background-color: rgb(var(--wash-a));
+  }
+
+  .ambient-orb-b {
+    right: -12rem;
+    top: 6rem;
+    height: 30rem;
+    width: 30rem;
+    background-color: rgb(var(--wash-b));
+  }
+
+  .ambient-orb-c {
+    bottom: -14rem;
+    left: 28%;
+    height: 34rem;
+    width: 34rem;
+    background-color: rgb(var(--wash-c));
   }
 
   .hide-scrollbar {
@@ -127,6 +183,10 @@
   }
 
   .field {
-    @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink transition-colors duration-300 ease-smooth placeholder:text-muted focus:border-ink/30;
+    @apply w-full rounded-xl border bg-surface/60 px-4 py-3 text-sm text-ink transition-colors duration-300 ease-smooth placeholder:text-muted focus:border-ink/30;
+    border-color: rgb(var(--line) / 0.8);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
   }
 }

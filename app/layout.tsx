@@ -91,6 +91,14 @@ export default function RootLayout({
       <body
         className={`${manrope.className} bg-background text-foreground antialiased`}
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        >
+          <div className="ambient-orb ambient-orb-a" />
+          <div className="ambient-orb ambient-orb-b" />
+          <div className="ambient-orb ambient-orb-c" />
+        </div>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -104,7 +112,7 @@ export default function RootLayout({
           >
             Skip to content
           </a>
-          <div className="min-h-screen pb-24">
+          <div className="relative z-10 min-h-screen pb-24">
             {children}
             <div aria-hidden="true" className="h-24 md:h-12" />
           </div>
