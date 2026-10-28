@@ -3,6 +3,7 @@ import { GalleryCard } from "@/components/site/GalleryCard";
 import { GalleryGrid } from "@/components/site/GalleryGrid";
 import { PageIntro } from "@/components/site/PageIntro";
 import { ProjectCover, ArchiveCover } from "@/components/site/ProjectCover";
+import { Reveal } from "@/components/site/Reveal";
 import { TaglineReveal } from "@/components/site/TaglineReveal";
 import { ARCHIVE, OWNER, PROJECTS } from "@/data";
 import { projectHref } from "@/lib/projects";
@@ -14,7 +15,7 @@ export default function HomePage() {
         <HireButton />
       </PageIntro>
 
-      <div className="mt-16">
+      <Reveal className="mt-16">
         <GalleryGrid>
           {PROJECTS.map((project) => (
             <GalleryCard
@@ -38,7 +39,7 @@ export default function HomePage() {
             </GalleryCard>
           ))}
         </GalleryGrid>
-      </div>
+      </Reveal>
 
       <TaglineReveal />
     </main>

@@ -41,11 +41,20 @@ export const metadata: Metadata = {
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
     siteName: `${OWNER.shortName} · Portfolio`,
+    images: [
+      {
+        url: "/og-cover.jpg",
+        width: 1200,
+        height: 630,
+        alt: `Portrait of ${OWNER.fullName}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
+    images: ["/og-cover.jpg"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -76,7 +85,10 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <div className="min-h-screen pb-48 md:pb-36">{children}</div>
+        <div className="min-h-screen pb-24">
+          {children}
+          <div aria-hidden="true" className="h-24 md:h-12" />
+        </div>
         <FixedFooter />
         <Dock />
       </body>

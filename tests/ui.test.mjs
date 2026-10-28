@@ -91,6 +91,12 @@ test("home intro renders the pill, split headline, and copy-email CTA", async ()
           '[data-testid="tagline-reveal"] [data-active="true"]'
         ).length > 0
     );
+    assert.ok(
+      await page.$$eval(
+        '[data-reveal][data-shown="true"]',
+        (els) => els.length
+      ) > 0
+    );
   });
 
   await withPage("/", { width: 390, height: 900 }, async (page) => {
@@ -317,6 +323,53 @@ test("contact page renders the email card, social grid, and working form", async
       ),
       true
     );
+  });
+});
+
+test("unknown routes render the branded 404 and privacy is linked from the footer", async () => {
+  await withPage(
+    "/this-page-does-not-exist",
+    { width: 1440, height: 960 },
+    async (page) => {
+      assert.match(
+        await page.$eval("h1", (el) => el.textContent),
+        /This page isn’t here/
+      );
+      assert.equal(
+        await page.$eval('main a[href="/"]', (el) => el.textContent.trim()),
+        "Back home"
+      );
+      assert.equal(
+        await page.$$eval('[data-testid="dock"] [data-nav-item]', (els) => els.length),
+        5
+      );
+      assert.deepEqual(
+        page.__errors.filter(
+          (message) => !/Failed to load resource.*404/.test(message)
+        ),
+        []
+      );
+    },
+    { expectStatus: 404 }
+  );
+
+  await withPage("/privacy", { width: 1440, height: 960 }, async (page) => {
+    assert.match(
+      await page.$eval("h1", (el) => el.textContent),
+      /What this site collects/
+    );
+    assert.match(await page.$eval("main", (el) => el.textContent), /Resend/);
+    assert.equal(
+      await page.$eval('[data-testid="site-footer"] a[href="/privacy"]', (el) =>
+        el.textContent.trim()
+      ),
+      "Privacy"
+    );
+    assert.equal(
+      await page.$eval('main a[href="/contact"]', (el) => el.textContent.trim()),
+      "Back to contact"
+    );
+    assert.deepEqual(page.__errors, []);
   });
 });
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/data";
 import { cn } from "@/lib/utils";
-import { BookOpen, Briefcase, Envelope, House, User } from "./icons";
+import { ArrowUpRight, BookOpen, Briefcase, Envelope, House, User } from "./icons";
 
 const ICONS = {
   "/": House,
@@ -26,12 +26,13 @@ export function Dock() {
       >
         <Link
           href="/contact"
-          className="flex h-8 items-center justify-center rounded-t-2xl border-b border-white/10 px-3 text-xs text-white/85 transition-colors duration-300 ease-smooth hover:bg-white/5 hover:text-white"
+          className="flex h-8 items-center justify-center gap-1 rounded-t-2xl border-b border-white/10 px-3 text-xs text-white/85 transition-colors duration-300 ease-smooth hover:bg-white/5 hover:text-white active:bg-white/10"
         >
-          Leave a note <span aria-hidden="true">↗</span>
+          Leave a note
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
 
-        <ul className="flex items-center gap-1 px-1 pb-1 pt-2">
+        <ul className="flex items-center justify-around gap-1 px-1 pb-1 pt-2">
           {NAV_LINKS.map((link) => {
             const active =
               link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
@@ -45,7 +46,7 @@ export function Dock() {
                   aria-current={active ? "page" : undefined}
                   data-nav-item={link.href}
                   className={cn(
-                    "inline-flex h-10 items-center justify-center gap-2 rounded-full px-2 text-sm transition duration-300 ease-smooth active:scale-[0.98]",
+                    "inline-flex h-10 items-center justify-center gap-2 rounded-full px-2 text-sm transition-[transform,background-color,color] duration-300 ease-smooth active:scale-[0.98]",
                     active
                       ? "bg-white/10 text-white"
                       : "text-white/60 hover:bg-white/5 hover:text-white/90"

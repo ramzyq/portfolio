@@ -7,6 +7,7 @@ import {
 import { ListRow } from "@/components/site/ListRow";
 import { ListSection } from "@/components/site/ListSection";
 import { PageIntro } from "@/components/site/PageIntro";
+import { Reveal } from "@/components/site/Reveal";
 import { ACHIEVEMENTS, EXPERIENCE, STATS } from "@/data";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default function LearnPage() {
         subtitle="Competitions, classrooms, and what the work taught me."
       />
 
-      <div className="mt-16">
+      <Reveal className="mt-16">
         <ListSection
           label="The library"
           count={`${LIBRARY.length} entries`}
@@ -82,9 +83,9 @@ export default function LearnPage() {
             />
           ))}
         </ListSection>
-      </div>
+      </Reveal>
 
-      <div className="mt-20">
+      <Reveal className="mt-20">
         <ListSection
           label="Where I spent the time"
           count={`${EXPERIENCE.length} entries`}
@@ -100,7 +101,7 @@ export default function LearnPage() {
             />
           ))}
         </ListSection>
-      </div>
+      </Reveal>
     </main>
   );
 }

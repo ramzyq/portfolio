@@ -76,7 +76,7 @@ export function TaglineReveal() {
         className="mt-4 text-balance text-4xl font-medium leading-tight text-ink md:text-5xl"
       >
         {LINES.map((line, lineIndex) => (
-          <span key={line} className="md:block">
+          <span key={line} className="block">
             {line.split(" ").map((word, wordIndex) => (
               <span
                 key={`${lineIndex}-${wordIndex}`}
@@ -91,7 +91,7 @@ export function TaglineReveal() {
       </p>
       <a
         href="/contact"
-        className="mt-8 inline-flex items-center gap-2 text-base font-semibold text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline"
+        className="mt-8 inline-flex items-center gap-2 text-base font-semibold text-ink underline-offset-4 transition-colors duration-300 ease-smooth hover:underline active:opacity-70"
       >
         Start a conversation
         <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

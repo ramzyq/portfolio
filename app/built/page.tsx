@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ListRow } from "@/components/site/ListRow";
 import { ListSection } from "@/components/site/ListSection";
 import { PageIntro } from "@/components/site/PageIntro";
+import { Reveal } from "@/components/site/Reveal";
 import { PROJECTS } from "@/data";
 import { projectHref } from "@/lib/projects";
 
@@ -18,7 +19,7 @@ export default function BuiltPage() {
         subtitle="Apps, experiments, and work with students."
       />
 
-      <div className="mt-16">
+      <Reveal className="mt-16">
         <ListSection
           label="Out in the world"
           count={`${PROJECTS.length} projects`}
@@ -48,7 +49,7 @@ export default function BuiltPage() {
             />
           ))}
         </ListSection>
-      </div>
+      </Reveal>
     </main>
   );
 }
