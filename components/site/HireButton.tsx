@@ -30,7 +30,7 @@ export function HireButton({
       onClick={copyEmail}
       aria-label={`${label}: copy email address`}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full bg-ink font-semibold text-white transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98]",
+        "inline-flex items-center gap-2 rounded-full bg-ink font-semibold text-background transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98]",
         size === "sm" ? "px-3 py-2 text-sm" : "px-3 py-2 text-base"
       )}
     >

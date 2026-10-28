@@ -319,7 +319,7 @@ function Makersplace({ palette }: { palette: { ink: string; accent: string } }) 
             style={{ backgroundColor: block.color }}
           />
         ))}
-        <div className="ml-auto flex h-[clamp(38px,10vw,56px)] w-[clamp(38px,10vw,56px)] items-center justify-center rounded-full bg-ink/80">
+        <div className="ml-auto flex h-[clamp(38px,10vw,56px)] w-[clamp(38px,10vw,56px)] items-center justify-center rounded-full bg-[#242424]/80">
           <RobotGlyph className="h-[70%] w-[70%] text-white" />
         </div>
       </div>

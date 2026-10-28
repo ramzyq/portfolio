@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Dock } from "@/components/site/Dock";
 import { FixedFooter } from "@/components/site/FixedFooter";
+import { ThemeColorSync } from "@/components/site/ThemeColorSync";
 import { OWNER } from "@/data";
 import "./globals.css";
 
@@ -66,7 +68,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -77,20 +83,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={manrope.variable}>
-      <body className={`${manrope.className} bg-white text-ink antialiased`}>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+    <html
+      lang="en"
+      className={manrope.variable}
+      suppressHydrationWarning
+    >
+      <body
+        className={`${manrope.className} bg-background text-foreground antialiased`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          Skip to content
-        </a>
-        <div className="min-h-screen pb-24">
-          {children}
-          <div aria-hidden="true" className="h-24 md:h-12" />
-        </div>
-        <FixedFooter />
-        <Dock />
+          <ThemeColorSync />
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-background"
+          >
+            Skip to content
+          </a>
+          <div className="min-h-screen pb-24">
+            {children}
+            <div aria-hidden="true" className="h-24 md:h-12" />
+          </div>
+          <FixedFooter />
+          <Dock />
+        </ThemeProvider>
       </body>
     </html>
   );

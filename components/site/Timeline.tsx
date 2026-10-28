@@ -67,7 +67,7 @@ export function Timeline() {
                     className={cn(
                       "absolute flex h-12 items-center justify-between gap-2 overflow-hidden rounded-full px-3",
                       isPrimaryCurrent
-                        ? "bg-ink text-white"
+                        ? "bg-ink text-background"
                         : "bg-surface text-body"
                     )}
                     style={{ left: `${left}%`, width: `${width}%` }}
@@ -79,7 +79,7 @@ export function Timeline() {
                       <span
                         className={cn(
                           "block truncate text-xs leading-4",
-                          isPrimaryCurrent ? "text-white/60" : "text-body"
+                          isPrimaryCurrent ? "text-background/60" : "text-body"
                         )}
                       >
                         {item.title}
@@ -88,7 +88,7 @@ export function Timeline() {
                     <span
                       className={cn(
                         "shrink-0 text-xs",
-                        isPrimaryCurrent ? "text-white/70" : "text-body"
+                        isPrimaryCurrent ? "text-background/70" : "text-body"
                       )}
                     >
                       {item.current ? "Now" : `${item.start}–${item.end}`}

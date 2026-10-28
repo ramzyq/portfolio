@@ -83,7 +83,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex rounded-full bg-ink px-3 py-2 text-base font-semibold text-white transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98] disabled:opacity-60"
+        className="inline-flex rounded-full bg-ink px-3 py-2 text-base font-semibold text-background transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98] disabled:opacity-60"
       >
         {isSubmitting ? "Sending…" : "Send a note"}
       </button>

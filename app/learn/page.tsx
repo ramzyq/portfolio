@@ -75,7 +75,7 @@ export default function LearnPage() {
                   style={{ backgroundColor: item.cover.from }}
                 >
                   <item.icon
-                    className="h-4 w-4 text-ink/70"
+                    className="h-4 w-4 text-[#242424]/70"
                     aria-hidden="true"
                   />
                 </span>
