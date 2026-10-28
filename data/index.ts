@@ -1,5 +1,5 @@
-import type { LucideIcon } from "lucide-react";
-import { Award, Medal, Trophy } from "lucide-react";
+import type { IconComponent } from "@/components/site/icons";
+import { Award, Medal, Trophy } from "@/components/site/icons";
 
 export type ProjectStatus = "Shipped" | "Prototype" | "In Progress" | "Done" | "Ongoing";
 
@@ -42,7 +42,7 @@ export type AchievementType = {
   title: string;
   event: string;
   caption: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   cover: { from: string; to: string };
 };
 

@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "./icons";
 
 export function GalleryCard({
   href,
@@ -20,25 +20,26 @@ export function GalleryCard({
       rel={external ? "noreferrer" : undefined}
       aria-label={`${name}. ${caption}`}
       data-testid="gallery-card"
-      className="group block"
+      className="group block rounded-2xl transition-transform duration-300 ease-smooth active:scale-[0.995]"
     >
       <div
         data-cover
         aria-hidden="true"
-        className="relative aspect-[1.15/1] overflow-hidden rounded-[18px] bg-surface"
+        className="relative aspect-[1.15/1] overflow-hidden rounded-2xl bg-surface"
       >
-        <div className="h-full w-full transition-transform duration-500 ease-out motion-reduce:transition-none group-hover:scale-[1.015] motion-reduce:group-hover:scale-100">
+        <div className="h-full w-full transition-transform duration-500 ease-smooth motion-reduce:transition-none group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
           {children}
         </div>
       </div>
       <div className="mt-3 flex items-start justify-between gap-4 px-0.5">
         <div>
-          <p className="text-[15px] font-medium leading-[20px] text-ink">{name}</p>
-          <p className="mt-0.5 text-[14px] leading-[20px] text-body">{caption}</p>
+          <p className="text-sm font-medium leading-5 text-ink">{name}</p>
+          <p className="mt-0.5 text-pretty text-sm leading-5 text-body">
+            {caption}
+          </p>
         </div>
         <ArrowUpRight
-          className="mt-0.5 h-4 w-4 shrink-0 text-[#bbb] transition-colors group-hover:text-ink"
-          strokeWidth={1.6}
+          className="mt-0.5 h-4 w-4 shrink-0 text-soft transition-colors duration-300 ease-smooth group-hover:text-ink"
           aria-hidden="true"
         />
       </div>

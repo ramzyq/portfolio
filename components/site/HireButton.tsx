@@ -1,9 +1,9 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { OWNER } from "@/data";
 import { cn } from "@/lib/utils";
+import { Check, Copy } from "./icons";
 
 export function HireButton({
   label = `Hire ${OWNER.shortName}`,
@@ -30,16 +30,19 @@ export function HireButton({
       onClick={copyEmail}
       aria-label={`${label}: copy email address`}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full bg-ink font-medium text-white transition-transform hover:scale-[1.02] active:scale-[0.98]",
-        size === "sm" ? "px-4 py-2 text-[12px]" : "px-[18px] py-[11px] text-[13px]"
+        "inline-flex items-center gap-2 rounded-full bg-ink font-semibold text-white transition-[transform,background-color] duration-300 ease-smooth hover:scale-[1.02] hover:bg-ink/90 active:scale-[0.98]",
+        size === "sm" ? "px-3 py-2 text-sm" : "px-3 py-2 text-base"
       )}
     >
       {copied ? "Email copied" : label}
       {copied ? (
-        <Check className="h-3.5 w-3.5" aria-hidden="true" />
+        <Check className="h-4 w-4" aria-hidden="true" />
       ) : (
-        <Copy className="h-3.5 w-3.5" aria-hidden="true" />
+        <Copy className="h-4 w-4" aria-hidden="true" />
       )}
+      <span className="sr-only" aria-live="polite">
+        {copied ? "Email address copied" : ""}
+      </span>
     </button>
   );
 }

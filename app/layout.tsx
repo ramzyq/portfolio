@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { Dock } from "@/components/site/Dock";
 import { FixedFooter } from "@/components/site/FixedFooter";
 import { OWNER } from "@/data";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const manrope = localFont({
+  src: "./fonts/manrope-latin.woff2",
+  variable: "--font-manrope",
   display: "swap",
+  weight: "200 800",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ramzy.dev";
@@ -67,15 +68,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={`${inter.className} bg-white text-ink antialiased`}>
+    <html lang="en" className={manrope.variable}>
+      <body className={`${manrope.className} bg-white text-ink antialiased`}>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
           Skip to content
         </a>
-        <div className="min-h-screen pb-[190px] md:pb-[140px]">{children}</div>
+        <div className="min-h-screen pb-48 md:pb-36">{children}</div>
         <FixedFooter />
         <Dock />
       </body>

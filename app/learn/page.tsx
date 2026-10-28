@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { CalendarDays, GraduationCap, type LucideIcon } from "lucide-react";
+import {
+  CalendarDays,
+  GraduationCap,
+  type IconComponent,
+} from "@/components/site/icons";
 import { ListRow } from "@/components/site/ListRow";
 import { ListSection } from "@/components/site/ListSection";
 import { PageIntro } from "@/components/site/PageIntro";
@@ -13,7 +17,7 @@ type LibraryItem = {
   title: string;
   caption: string;
   meta?: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   cover: { from: string; to: string };
 };
 
@@ -44,9 +48,8 @@ const LIBRARY: LibraryItem[] = [
 
 export default function LearnPage() {
   return (
-    <main id="main" className="pt-8 md:pt-[72px]">
+    <main id="main" className="pt-10 md:pt-20">
       <PageIntro
-        width="inner"
         badge="Learn with Ramzy"
         lead="Things I’ve learned, shared with you."
         subtitle="Competitions, classrooms, and what the work taught me."
@@ -68,11 +71,12 @@ export default function LearnPage() {
               thumbnail={
                 <span
                   className="flex h-full w-full items-center justify-center"
-                  style={{
-                    background: `linear-gradient(145deg, ${item.cover.from}, ${item.cover.to})`,
-                  }}
+                  style={{ backgroundColor: item.cover.from }}
                 >
-                  <item.icon className="h-4 w-4 text-ink/70" aria-hidden="true" />
+                  <item.icon
+                    className="h-4 w-4 text-ink/70"
+                    aria-hidden="true"
+                  />
                 </span>
               }
             />

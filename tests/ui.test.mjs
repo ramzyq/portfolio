@@ -51,9 +51,9 @@ test("home intro renders the pill, split headline, and copy-email CTA", async ()
     assert.match(h1, /I’m Ramzy/);
     assert.match(h1, /University of Ghana/);
     assert.match(await page.$eval(".pill", (el) => el.textContent), /Currently at/);
-    assert.equal(await page.$eval("main", (el) => getComputedStyle(el).paddingTop), "46px");
-    assert.equal(await page.$eval("header", (el) => getComputedStyle(el).maxWidth), "640px");
-    assert.equal(await page.$eval("h1", (el) => getComputedStyle(el).fontSize), "32px");
+    assert.equal(await page.$eval("main", (el) => getComputedStyle(el).paddingTop), "64px");
+    assert.equal(await page.$eval("header", (el) => getComputedStyle(el).maxWidth), "680px");
+    assert.equal(await page.$eval("h1", (el) => getComputedStyle(el).fontSize), "30px");
     await page.evaluate(() => {
       window.__copied = "";
       Object.defineProperty(navigator, "clipboard", {
@@ -71,11 +71,31 @@ test("home intro renders the pill, split headline, and copy-email CTA", async ()
       document.querySelector("button")?.textContent?.includes("Email copied")
     );
     assert.equal(await page.evaluate(() => window.__copied), "konderamzy30@gmail.com");
+
+    assert.match(
+      await page.$eval('[data-testid="tagline-reveal"]', (el) => el.textContent),
+      /real people/
+    );
+    assert.ok(
+      await page.$$eval(
+        '[data-testid="tagline-reveal"] [data-word]',
+        (els) => els.length
+      ) >= 10
+    );
+    await page.evaluate(() =>
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" })
+    );
+    await page.waitForFunction(
+      () =>
+        document.querySelectorAll(
+          '[data-testid="tagline-reveal"] [data-active="true"]'
+        ).length > 0
+    );
   });
 
   await withPage("/", { width: 390, height: 900 }, async (page) => {
-    assert.equal(await page.$eval("h1", (el) => getComputedStyle(el).fontSize), "26px");
-    assert.equal(await page.$eval("main", (el) => getComputedStyle(el).paddingTop), "24px");
+    assert.equal(await page.$eval("h1", (el) => getComputedStyle(el).fontSize), "24px");
+    assert.equal(await page.$eval("main", (el) => getComputedStyle(el).paddingTop), "40px");
   });
 });
 

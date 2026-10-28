@@ -17,7 +17,10 @@ const config: Config = {
         surface: "#f7f7f8",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["var(--font-manrope)", "system-ui", "sans-serif"],
+      },
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       boxShadow: {
         card: "0 1px 0 rgba(0,0,0,0.04)",

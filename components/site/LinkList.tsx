@@ -1,5 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
 import type { SocialLinkType } from "@/data";
+import { ArrowUpRight } from "./icons";
 
 export function LinkList({ links }: { links: SocialLinkType[] }) {
   return (
@@ -14,12 +14,11 @@ export function LinkList({ links }: { links: SocialLinkType[] }) {
               href={link.href}
               target={external ? "_blank" : undefined}
               rel={external ? "noreferrer" : undefined}
-              className="group flex items-center justify-between py-3.5 text-[14px] text-ink"
+              className="group flex items-center justify-between py-4 text-sm text-ink transition-opacity duration-300 ease-smooth active:opacity-70"
             >
               {link.label}
               <ArrowUpRight
-                className="h-4 w-4 text-[#bbb] transition-all duration-200 motion-reduce:transition-none group-hover:translate-x-0.5 group-hover:text-ink"
-                strokeWidth={1.6}
+                className="h-4 w-4 text-soft transition-transform duration-300 ease-smooth group-hover:translate-x-0.5 group-hover:text-ink motion-reduce:transition-none"
                 aria-hidden="true"
               />
             </a>

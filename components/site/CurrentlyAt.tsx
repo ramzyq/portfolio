@@ -4,8 +4,8 @@ export function CurrentlyAt({ label = "Currently at" }: { label?: string }) {
   return (
     <div className="pill mx-auto">
       <span>{label}</span>
-      <span className="inline-flex items-center gap-1.5 font-medium text-ink">
-        <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-[5px] bg-ink text-[8px] font-semibold text-white">
+      <span className="inline-flex items-center gap-2 font-medium text-ink">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-ink text-xs font-semibold text-white">
           {OWNER.currentlyAtShort}
         </span>
         {OWNER.currentlyAt}

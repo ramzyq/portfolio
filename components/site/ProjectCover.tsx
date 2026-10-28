@@ -60,14 +60,17 @@ const ARCHIVE_ART: Record<
 };
 
 function Frame({
-  background,
+  color,
   children,
 }: {
-  background: string;
+  color: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative h-full w-full overflow-hidden" style={{ background }}>
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{ backgroundColor: color }}
+    >
       {children}
     </div>
   );
@@ -104,7 +107,7 @@ function Wordmark({
 
 function WindowShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-full overflow-hidden rounded-[12px] border border-white/70 bg-white/85 shadow-[0_10px_30px_rgba(20,30,25,0.12)]">
+    <div className="h-full overflow-hidden rounded-xl border border-white/70 bg-white/85 shadow-[0_10px_30px_rgba(20,30,25,0.12)]">
       {children}
     </div>
   );
@@ -112,11 +115,10 @@ function WindowShell({ children }: { children: React.ReactNode }) {
 
 export function ProjectCover({ project }: { project: ProjectType }) {
   const { cover } = project;
-  const background = `linear-gradient(160deg, ${cover.from} 0%, ${cover.to} 100%)`;
   const palette = { ink: cover.ink, accent: cover.accent };
 
   return (
-    <Frame background={background}>
+    <Frame color={cover.from}>
       {project.slug === "traderwise" && <TraderWise palette={palette} />}
       {project.slug === "notely" && <Notely palette={palette} />}
       {project.slug === "cyber-home-lab" && <HomeLab palette={palette} />}
@@ -267,7 +269,7 @@ function HomeLab({ palette }: { palette: { ink: string; accent: string } }) {
         </svg>
       </div>
 
-      <div className="absolute bottom-[8%] left-[7%] w-[64%] overflow-hidden rounded-[10px] bg-[#0f2a28] p-[3.5%] font-mono text-[clamp(6px,1.8vw,9px)] leading-[1.8] text-[#9ee0d4]">
+      <div className="absolute bottom-[8%] left-[7%] w-[64%] overflow-hidden rounded-lg bg-[#0f2a28] p-[3.5%] font-mono text-[clamp(6px,1.8vw,9px)] leading-[1.8] text-[#9ee0d4]">
         <p>kali@lab:~$ nmap 10.0.2.5</p>
         <p className="text-[#6ee7b7]">open 22/tcp ssh</p>
         <p className="text-[#6ee7b7]">open 80/tcp http</p>
@@ -327,10 +329,9 @@ function Makersplace({ palette }: { palette: { ink: string; accent: string } }) 
 
 export function ArchiveCover({ kind }: { kind: ArchiveKind }) {
   const art = ARCHIVE_ART[kind];
-  const background = `linear-gradient(160deg, ${art.from} 0%, ${art.to} 100%)`;
 
   return (
-    <Frame background={background}>
+    <Frame color={art.from}>
       <div className="absolute left-[8%] top-[9%] w-[70%]">
         <Wordmark
           title={art.label}

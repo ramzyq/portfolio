@@ -11,9 +11,8 @@ export const metadata: Metadata = {
 
 export default function BuiltPage() {
   return (
-    <main id="main" className="pt-8 md:pt-[72px]">
+    <main id="main" className="pt-10 md:pt-20">
       <PageIntro
-        width="inner"
         badge="Built by me"
         lead="Ideas I couldn’t leave as ideas."
         subtitle="Apps, experiments, and work with students."
@@ -35,12 +34,10 @@ export default function BuiltPage() {
               thumbnail={
                 <div
                   className="flex h-full w-full items-center justify-center"
-                  style={{
-                    background: `linear-gradient(145deg, ${project.cover.from}, ${project.cover.to})`,
-                  }}
+                  style={{ backgroundColor: project.cover.from }}
                 >
                   <span
-                    className="text-[14px] font-semibold"
+                    className="text-sm font-semibold"
                     style={{ color: project.cover.ink }}
                     aria-hidden="true"
                   >

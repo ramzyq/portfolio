@@ -2,7 +2,7 @@
 
 A production-ready portfolio site for **Konde Ramzy Gbati** — builder, designer, and STEM educator.
 
-Built with Next.js 14 (App Router), Tailwind CSS, Inter, and the Resend API for contact-form email delivery.
+Built with Next.js 14 (App Router), Tailwind CSS, Manrope, and the Resend API for contact-form email delivery.
 
 ---
 
@@ -10,8 +10,8 @@ Built with Next.js 14 (App Router), Tailwind CSS, Inter, and the Resend API for 
 
 - **Framework** — Next.js 14 (App Router, TypeScript)
 - **Styling** — Tailwind CSS v3 with CSS design tokens
-- **Icons** — Lucide React
-- **Fonts** — Inter, via `next/font`
+- **Icons** — Custom inline SVG line icons
+- **Fonts** — Manrope, self-hosted via `next/font/local`
 - **Theme** — Light editorial palette (`#242424` ink on white)
 - **Forms** — React Hook Form + client-side validation
 - **Email** — Resend (server route at `app/api/contact/route.ts`)
@@ -207,7 +207,8 @@ Add the same env vars through `vercel env add` or the dashboard.
 - Skip-to-content link, ARIA labels on every interactive element
 - Focus-visible rings on all links/buttons
 - `next/font` with `display: swap`
-- Motion used sparingly — no layout-shifting entrance animations
+- Motion used sparingly — the home tagline activates word by word and all animation respects `prefers-reduced-motion`
+- Flat backgrounds and CSS/SVG project covers — no stock imagery
 - Targets Lighthouse 90+ on Performance / Accessibility / SEO / Best Practices
 
 ---

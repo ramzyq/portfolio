@@ -3,17 +3,18 @@ import { GalleryCard } from "@/components/site/GalleryCard";
 import { GalleryGrid } from "@/components/site/GalleryGrid";
 import { PageIntro } from "@/components/site/PageIntro";
 import { ProjectCover, ArchiveCover } from "@/components/site/ProjectCover";
+import { TaglineReveal } from "@/components/site/TaglineReveal";
 import { ARCHIVE, OWNER, PROJECTS } from "@/data";
 import { projectHref } from "@/lib/projects";
 
 export default function HomePage() {
   return (
-    <main id="main" className="pt-6 md:pt-[46px]">
+    <main id="main" className="pt-10 md:pt-16">
       <PageIntro lead={OWNER.headlineLead} mute={OWNER.headlineMute}>
         <HireButton />
       </PageIntro>
 
-      <div className="mt-11">
+      <div className="mt-16">
         <GalleryGrid>
           {PROJECTS.map((project) => (
             <GalleryCard
@@ -38,6 +39,8 @@ export default function HomePage() {
           ))}
         </GalleryGrid>
       </div>
+
+      <TaglineReveal />
     </main>
   );
 }
