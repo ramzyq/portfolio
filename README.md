@@ -2,7 +2,7 @@
 
 A production-ready portfolio site for **Konde Ramzy Gbati** — builder, designer, and STEM educator.
 
-Built with Next.js 14 (App Router), Tailwind CSS, Inter, and the Resend API for contact-form email delivery.
+Built with Next.js 14 (App Router), Tailwind CSS, Manrope, and the Resend API for contact-form email delivery.
 
 ---
 
@@ -10,8 +10,8 @@ Built with Next.js 14 (App Router), Tailwind CSS, Inter, and the Resend API for 
 
 - **Framework** — Next.js 14 (App Router, TypeScript)
 - **Styling** — Tailwind CSS v3 with CSS design tokens
-- **Icons** — Lucide React
-- **Fonts** — Inter, via `next/font`
+- **Icons** — Custom inline SVG line icons
+- **Fonts** — Manrope, self-hosted via `next/font/local`
 - **Theme** — Light editorial palette (`#242424` ink on white)
 - **Forms** — React Hook Form + client-side validation
 - **Email** — Resend (server route at `app/api/contact/route.ts`)
@@ -71,22 +71,28 @@ npm run start
 │   ├── about/page.tsx           About + career timeline
 │   ├── built/page.tsx           Project list
 │   ├── contact/page.tsx         Email card, social links, form
+│   ├── fonts/                   Self-hosted Manrope + OFL license
 │   ├── learn/page.tsx           Achievements + experience list
+│   ├── privacy/page.tsx         Contact form privacy note
 │   ├── globals.css              Tailwind layers + design tokens
 │   ├── layout.tsx               Metadata, font, dock, fixed footer
+│   ├── not-found.tsx            Branded 404
 │   └── page.tsx                 Home gallery
 ├── components/
 │   └── site/                    Live shell and page components
 │       ├── Dock.tsx             Fixed bottom navigation
 │       ├── FixedFooter.tsx      Fixed identity/location bar
 │       ├── PageIntro.tsx        Badge, headline, subtitle
+│       ├── Reveal.tsx           IntersectionObserver section reveal
 │       ├── GalleryGrid.tsx      Home card grid
 │       ├── GalleryCard.tsx      Card image, label, arrow
 │       ├── ProjectCover.tsx     Original CSS/SVG project art
+│       ├── TaglineReveal.tsx    Word by word home tagline
 │       ├── ListSection.tsx      Shared list column
 │       ├── ListRow.tsx          Shared list row
 │       ├── Timeline.tsx         About career timeline
 │       ├── EmailCard.tsx        Copy-email surface
+│       ├── icons.tsx            Custom inline SVG line icons
 │       └── ContactForm.tsx      Working contact form
 ├── data/
 │   └── index.ts                 All site content as typed constants
@@ -99,7 +105,8 @@ npm run start
 ├── scripts/capture.mjs          Screenshot capture
 ├── public/
 │   ├── favicon.svg
-│   └── og-image.jpg
+│   ├── og-cover.jpg             1200x630 social preview
+│   └── og-image.jpg             Original portrait
 ├── tailwind.config.ts
 ├── next.config.mjs
 ├── vercel.json
@@ -130,9 +137,9 @@ Each export is strictly typed, so TypeScript will flag missing or malformed fiel
 
 ### OG / share image
 
-`public/og-image.jpg` is available for social previews. The layout currently sets
-OpenGraph title and description only; add an `images` entry in `app/layout.tsx`
-if you want the image included.
+`public/og-cover.jpg` is a 1200×630 crop of the portrait. The layout includes it
+in both OpenGraph and Twitter metadata, so shared links render a consistent
+preview. The original portrait remains at `public/og-image.jpg`.
 
 ---
 
@@ -207,7 +214,8 @@ Add the same env vars through `vercel env add` or the dashboard.
 - Skip-to-content link, ARIA labels on every interactive element
 - Focus-visible rings on all links/buttons
 - `next/font` with `display: swap`
-- Motion used sparingly — no layout-shifting entrance animations
+- Motion used sparingly — the home tagline activates word by word and all animation respects `prefers-reduced-motion`
+- Flat backgrounds and CSS/SVG project covers — no stock imagery
 - Targets Lighthouse 90+ on Performance / Accessibility / SEO / Best Practices
 
 ---

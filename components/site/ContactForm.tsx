@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import { ArrowUpRight } from "./icons";
 
 type ContactFormValues = {
   name: string;
@@ -41,10 +43,11 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-5 space-y-4" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
       <Field label="Name" error={errors.name?.message}>
         <input
           className="field"
+          autoComplete="name"
           {...register("name", { required: "Please enter your name." })}
         />
       </Field>
@@ -52,6 +55,7 @@ export function ContactForm() {
         <input
           type="email"
           className="field"
+          autoComplete="email"
           {...register("email", {
             required: "Please enter your email.",
             pattern: {
@@ -64,6 +68,7 @@ export function ContactForm() {
       <Field label="Subject" error={errors.subject?.message}>
         <input
           className="field"
+          autoComplete="off"
           {...register("subject", { required: "Please enter a subject." })}
         />
       </Field>
@@ -80,11 +85,37 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex rounded-full bg-ink px-5 py-2.5 text-[13px] font-medium text-white transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
+        className="btn-shine group inline-flex items-center gap-2 rounded-full bg-ink px-3 py-2 text-base font-semibold text-background transition-[transform,background-color,box-shadow] duration-500 ease-smooth hover:-translate-y-0.5 hover:bg-ink/90 hover:shadow-[0_10px_24px_-14px_rgba(0,0,0,0.55)] active:translate-y-0 active:scale-[0.98] disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none"
       >
-        {isSubmitting ? "Sending…" : "Send a note"}
+        <span>{isSubmitting ? "Sending…" : "Send a note"}</span>
+        {isSubmitting ? (
+          <span
+            aria-hidden="true"
+            className="form-spinner h-4 w-4 rounded-full border-2 border-background/35 border-t-background"
+          />
+        ) : (
+          <ArrowUpRight
+            className="h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        )}
       </button>
-      {status ? <p className="text-[13px] text-body">{status}</p> : null}
+      {status ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className={cn(
+            "text-sm",
+            status.startsWith("Message sent")
+              ? "text-emerald-700 dark:text-emerald-400"
+              : "text-body"
+          )}
+        >
+          <span key={status} className="status-pop inline-block">
+            {status}
+          </span>
+        </p>
+      ) : null}
     </form>
   );
 }
@@ -100,9 +131,16 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[12px] text-body">{label}</span>
+      <span className="mb-2 block text-xs text-body">{label}</span>
       {children}
-      {error ? <span className="mt-1 block text-[12px] text-red-500">{error}</span> : null}
+      {error ? (
+        <span
+          role="alert"
+          className="field-error mt-1 block text-xs text-red-500"
+        >
+          {error}
+        </span>
+      ) : null}
     </label>
   );
 }

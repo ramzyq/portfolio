@@ -1,14 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { CursorGlow } from "@/components/site/CursorGlow";
 import { Dock } from "@/components/site/Dock";
 import { FixedFooter } from "@/components/site/FixedFooter";
+import { ScrollProgress } from "@/components/site/ScrollProgress";
+import { ThemeColorSync } from "@/components/site/ThemeColorSync";
 import { OWNER } from "@/data";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const manrope = localFont({
+  src: "./fonts/manrope-latin.woff2",
+  variable: "--font-manrope",
   display: "swap",
+  weight: "200 800",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ramzy.dev";
@@ -40,11 +45,20 @@ export const metadata: Metadata = {
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
     siteName: `${OWNER.shortName} · Portfolio`,
+    images: [
+      {
+        url: "/og-cover.jpg",
+        width: 1200,
+        height: 630,
+        alt: `Portrait of ${OWNER.fullName}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${OWNER.fullName} — ${OWNER.tagline}`,
     description: OWNER.bioShort,
+    images: ["/og-cover.jpg"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -56,7 +70,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -67,17 +85,44 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={`${inter.className} bg-white text-ink antialiased`}>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+    <html
+      lang="en"
+      className={manrope.variable}
+      suppressHydrationWarning
+    >
+      <body
+        className={`${manrope.className} bg-background text-foreground antialiased`}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         >
-          Skip to content
-        </a>
-        <div className="min-h-screen pb-[190px] md:pb-[140px]">{children}</div>
-        <FixedFooter />
-        <Dock />
+          <div className="ambient-orb ambient-orb-a orb-drift-a" />
+          <div className="ambient-orb ambient-orb-b orb-drift-b" />
+          <div className="ambient-orb ambient-orb-c orb-drift-c" />
+        </div>
+        <CursorGlow />
+        <ScrollProgress />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ThemeColorSync />
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-background"
+          >
+            Skip to content
+          </a>
+          <div className="relative z-10 min-h-screen pb-24">
+            {children}
+            <div aria-hidden="true" className="h-24 md:h-12" />
+          </div>
+          <FixedFooter />
+          <Dock />
+        </ThemeProvider>
       </body>
     </html>
   );

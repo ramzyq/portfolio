@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ListRow } from "@/components/site/ListRow";
 import { ListSection } from "@/components/site/ListSection";
 import { PageIntro } from "@/components/site/PageIntro";
+import { Reveal } from "@/components/site/Reveal";
 import { PROJECTS } from "@/data";
 import { projectHref } from "@/lib/projects";
 
@@ -11,15 +12,14 @@ export const metadata: Metadata = {
 
 export default function BuiltPage() {
   return (
-    <main id="main" className="pt-8 md:pt-[72px]">
+    <main id="main" className="pt-10 md:pt-20">
       <PageIntro
-        width="inner"
         badge="Built by me"
         lead="Ideas I couldn’t leave as ideas."
         subtitle="Apps, experiments, and work with students."
       />
 
-      <div className="mt-16">
+      <Reveal className="mt-16">
         <ListSection
           label="Out in the world"
           count={`${PROJECTS.length} projects`}
@@ -35,12 +35,10 @@ export default function BuiltPage() {
               thumbnail={
                 <div
                   className="flex h-full w-full items-center justify-center"
-                  style={{
-                    background: `linear-gradient(145deg, ${project.cover.from}, ${project.cover.to})`,
-                  }}
+                  style={{ backgroundColor: project.cover.from }}
                 >
                   <span
-                    className="text-[14px] font-semibold"
+                    className="text-sm font-semibold"
                     style={{ color: project.cover.ink }}
                     aria-hidden="true"
                   >
@@ -51,7 +49,7 @@ export default function BuiltPage() {
             />
           ))}
         </ListSection>
-      </div>
+      </Reveal>
     </main>
   );
 }

@@ -1,37 +1,46 @@
 "use client";
 
-import { BookOpen, BriefcaseBusiness, House, Mail, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/data";
 import { cn } from "@/lib/utils";
+import { ArrowUpRight, BookOpen, Briefcase, Envelope, House, User } from "./icons";
+import { ThemeToggle } from "./ThemeToggle";
 
 const ICONS = {
   "/": House,
-  "/about": UserRound,
-  "/built": BriefcaseBusiness,
+  "/about": User,
+  "/built": Briefcase,
   "/learn": BookOpen,
-  "/contact": Mail,
+  "/contact": Envelope,
 } as const;
 
 export function Dock() {
   const pathname = usePathname() ?? "/";
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-[96px] z-50 flex justify-center px-4 md:bottom-[46px]">
+    <div className="pointer-events-none fixed inset-x-0 bottom-24 z-50 flex justify-center px-4 md:bottom-12">
       <nav
         aria-label="Main navigation"
         data-testid="dock"
-        className="pointer-events-auto w-[316px] max-w-[calc(100vw-32px)] rounded-[24px] bg-[#242424] p-[5px] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_8px_24px_rgba(0,0,0,0.125),0_2px_6px_rgba(0,0,0,0.08)]"
+        className="dock-enter pointer-events-auto w-80 max-w-[calc(100vw-32px)] rounded-3xl border border-white/10 bg-dock/75 p-1 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_18px_50px_rgba(0,0,0,0.22),0_2px_6px_rgba(0,0,0,0.08)] backdrop-blur-xl backdrop-saturate-150"
       >
-        <Link
-          href="/contact"
-          className="flex h-8 items-center justify-center rounded-t-[23px] border-b border-white/10 px-3.5 text-[11px] text-white/85 transition-colors hover:bg-white/[0.06] hover:text-white"
-        >
-          Leave a note <span aria-hidden="true">↗</span>
-        </Link>
+        <div className="flex items-center gap-1 rounded-t-2xl border-b border-white/10 pl-1 pr-0.5">
+          <span aria-hidden="true" className="h-8 w-8 shrink-0" />
+          <Link
+            href="/contact"
+            className="group flex h-8 flex-1 items-center justify-center gap-1 rounded-t-2xl px-3 text-xs text-white/85 transition-colors duration-300 ease-smooth hover:bg-white/5 hover:text-white active:bg-white/10 focus-visible:outline-white/80"
+          >
+            Leave a note
+            <ArrowUpRight
+              className="h-3.5 w-3.5 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </Link>
+          <ThemeToggle />
+        </div>
 
-        <ul className="flex items-center gap-[3px] px-[3px] pb-[3px] pt-2">
+        <ul className="flex items-center justify-around gap-1 px-1 pb-1 pt-2">
           {NAV_LINKS.map((link) => {
             const active =
               link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
@@ -45,14 +54,20 @@ export function Dock() {
                   aria-current={active ? "page" : undefined}
                   data-nav-item={link.href}
                   className={cn(
-                    "inline-flex h-[38px] items-center justify-center gap-1.5 rounded-full px-2 text-[13px] transition-colors",
+                    "group inline-flex h-10 items-center justify-center gap-2 rounded-full px-2 text-sm transition-[transform,background-color,color] duration-300 ease-smooth focus-visible:outline-white/80 active:scale-[0.98]",
                     active
-                      ? "border border-white/[0.06] bg-[#3b3b3b] text-white"
-                      : "text-white/55 hover:text-white/85"
+                      ? "bg-white/10 text-white"
+                      : "text-white/60 hover:bg-white/5 hover:text-white/90"
                   )}
                 >
-                  <Icon className="h-[17px] w-[17px]" strokeWidth={1.6} aria-hidden="true" />
-                  {active && link.href !== "/" ? <span>{link.label}</span> : null}
+                  <Icon
+                    className={cn(
+                      "h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:scale-110",
+                      active && "icon-pop"
+                    )}
+                    aria-hidden="true"
+                  />
+                  {active ? <span className="label-pop">{link.label}</span> : null}
                 </Link>
               </li>
             );

@@ -50,7 +50,12 @@ export async function closeBrowser() {
   }
 }
 
-export async function withPage(pathname, viewport, fn) {
+export async function withPage(
+  pathname,
+  viewport,
+  fn,
+  { expectStatus, colorScheme } = {}
+) {
   const browser = await getBrowser();
   const page = await browser.newPage();
   page.__errors = [];
@@ -60,13 +65,25 @@ export async function withPage(pathname, viewport, fn) {
   page.on("pageerror", (error) => page.__errors.push(String(error)));
 
   await page.setViewport(viewport);
+  if (colorScheme) {
+    await page.emulateMediaFeatures([
+      { name: "prefers-color-scheme", value: colorScheme },
+    ]);
+  }
   try {
     const response = await page.goto(`${BASE_URL}${pathname}`, {
       waitUntil: "networkidle2",
       timeout: 120_000,
     });
-    if (!response || !response.ok()) {
-      throw new Error(`Failed to load ${BASE_URL}${pathname} (${response?.status()})`);
+    const status = response?.status() ?? 0;
+    if (expectStatus) {
+      if (status !== expectStatus) {
+        throw new Error(
+          `Expected ${expectStatus} from ${BASE_URL}${pathname}, got ${status}`
+        );
+      }
+    } else if (!response || !response.ok()) {
+      throw new Error(`Failed to load ${BASE_URL}${pathname} (${status})`);
     }
     await new Promise((resolve) => setTimeout(resolve, 400));
     return await fn(page);

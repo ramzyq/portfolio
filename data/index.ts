@@ -1,5 +1,5 @@
-import type { LucideIcon } from "lucide-react";
-import { Award, Medal, Trophy } from "lucide-react";
+import type { IconComponent } from "@/components/site/icons";
+import { Award, Medal, Trophy } from "@/components/site/icons";
 
 export type ProjectStatus = "Shipped" | "Prototype" | "In Progress" | "Done" | "Ongoing";
 
@@ -42,7 +42,7 @@ export type AchievementType = {
   title: string;
   event: string;
   caption: string;
-  icon: LucideIcon;
+  icon: IconComponent;
   cover: { from: string; to: string };
 };
 
@@ -78,7 +78,7 @@ export const OWNER = {
   currentlyAt: "University of Ghana",
   currentlyAtShort: "UG",
   bioShort:
-    "I'm an IT student and builder focused on shipping things that work for real people — not demos.",
+    "I'm an IT student and builder focused on shipping things that work for real people, not demos.",
   headlineLead: "I’m Ramzy, a builder, designer, and STEM educator.",
   headlineMute:
     "Currently studying Information Technology at the University of Ghana.",
@@ -135,7 +135,7 @@ export const PROJECTS: ProjectType[] = [
     name: "TraderWise",
     tagline: "Advice for market traders",
     description:
-      "AI-powered business advisor for informal market traders in Ghana. Helps small traders with pricing, inventory insights, and day-to-day business decisions in plain language.",
+      "AI business advisor for informal market traders in Ghana. Helps small traders with pricing, inventory insights, and daily business decisions in plain language.",
     stack: ["AI / LLM backend"],
     status: "Done",
     collaborators: "Built with Julien & Richmond (hackathon)",
@@ -153,7 +153,7 @@ export const PROJECTS: ProjectType[] = [
     name: "Notely",
     tagline: "A calmer place to write",
     description:
-      "A clean note-taking app with full create, read, update, and delete support. Built to feel instant on mobile and stay out of the user's way.",
+      "A clean app for notes with full create, read, update, and delete support. Built to feel instant on mobile and stay out of the user's way.",
     stack: ["Flutter", "Dart", "Claude Code"],
     status: "Done",
     github: "https://github.com/ramzyq/mynotes",
@@ -169,7 +169,7 @@ export const PROJECTS: ProjectType[] = [
     name: "Home Lab",
     tagline: "Practice, not theory",
     description:
-      "A personal penetration testing lab built on virtual machines for hands-on practice with ethical hacking, vulnerability research, and reporting.",
+      "A personal penetration testing lab built on virtual machines for practical experience with ethical hacking, vulnerability research, and reporting.",
     stack: ["Kali Linux", "Metasploitable 2", "DVWA", "VirtualBox"],
     status: "Ongoing",
     cover: {

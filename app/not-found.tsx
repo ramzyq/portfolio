@@ -1,0 +1,27 @@
+import Link from "next/link";
+import { ArrowUpRight } from "@/components/site/icons";
+import { PageIntro } from "@/components/site/PageIntro";
+
+export default function NotFound() {
+  return (
+    <main id="main" className="pt-10 md:pt-20">
+      <PageIntro
+        badge="404"
+        lead="This page isn’t here."
+        mute="Let’s get you back."
+        subtitle="The link may be old, or the page may have moved."
+      >
+        <Link
+          href="/"
+          className="btn-shine group relative inline-flex items-center gap-2 rounded-full bg-ink px-3 py-2 text-base font-semibold text-background transition-[transform,background-color] duration-500 ease-smooth hover:-translate-y-0.5 hover:bg-ink/90 active:translate-y-0 active:scale-[0.98]"
+        >
+          Back home
+          <ArrowUpRight
+            className="h-4 w-4 transition-transform duration-500 ease-smooth group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </Link>
+      </PageIntro>
+    </main>
+  );
+}
