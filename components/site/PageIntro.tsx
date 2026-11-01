@@ -1,4 +1,5 @@
 import { CurrentlyAt } from "./CurrentlyAt";
+import { ScrambleText } from "./ScrambleText";
 
 export function PageIntro({
   badge,
@@ -6,12 +7,14 @@ export function PageIntro({
   mute,
   subtitle,
   children,
+  glitch = false,
 }: {
   badge?: string;
   lead: string;
   mute?: string;
   subtitle?: string;
   children?: React.ReactNode;
+  glitch?: boolean;
 }) {
   return (
     <header className="relative mx-auto flex w-full max-w-[680px] flex-col items-center px-6 text-center md:px-0">
@@ -22,14 +25,16 @@ export function PageIntro({
         {badge ? <div className="pill">{badge}</div> : <CurrentlyAt />}
       </div>
       <h1
-        className="headline headline-gradient hero-enter mt-10"
+        className={`headline headline-gradient hero-enter mt-10${glitch ? " glitch-headline" : ""}`}
         style={{ animationDelay: "90ms" }}
       >
-        {lead}
+        <ScrambleText text={lead} />
         {mute ? (
           <>
             <br className="hidden md:block" />{" "}
-            <span className="headline-mute">{mute}</span>
+            <span className="headline-mute">
+              <ScrambleText text={mute} delay={180} duration={1100} />
+            </span>
           </>
         ) : null}
       </h1>

@@ -1,4 +1,5 @@
 import { HireButton } from "@/components/site/HireButton";
+import { ExplodedStack } from "@/components/site/ExplodedStack";
 import { GalleryCard } from "@/components/site/GalleryCard";
 import { GalleryGrid } from "@/components/site/GalleryGrid";
 import { PageIntro } from "@/components/site/PageIntro";
@@ -14,6 +15,8 @@ export default function HomePage() {
       <PageIntro lead={OWNER.headlineLead} mute={OWNER.headlineMute}>
         <HireButton />
       </PageIntro>
+
+      <ExplodedStack />
 
       <Reveal className="mt-16">
         <GalleryGrid>

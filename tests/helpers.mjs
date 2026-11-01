@@ -85,6 +85,11 @@ export async function withPage(
     } else if (!response || !response.ok()) {
       throw new Error(`Failed to load ${BASE_URL}${pathname} (${status})`);
     }
+    await page
+      .waitForFunction(() => document.documentElement.dataset.hydrated === "true", {
+        timeout: 60_000,
+      })
+      .catch(() => {});
     await new Promise((resolve) => setTimeout(resolve, 400));
     return await fn(page);
   } finally {
