@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /vault
+
+# Curious? Good. The vault opens for people who find all six flags.
+# Start here: press ` on the homepage and type `cat readme.md`.

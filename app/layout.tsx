@@ -1,12 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { CursorGlow } from "@/components/site/CursorGlow";
+import { BootIntro } from "@/components/site/BootIntro";
+import { CtfTracker } from "@/components/site/CtfTracker";
 import { Dock } from "@/components/site/Dock";
+import { EasterEggs } from "@/components/site/EasterEggs";
 import { FixedFooter } from "@/components/site/FixedFooter";
+import { Robot } from "@/components/site/Robot";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
+import { SystemHud } from "@/components/site/SystemHud";
+import { Terminal } from "@/components/site/Terminal";
+import { Toaster } from "@/components/site/Toaster";
+import { TechBackdrop } from "@/components/site/TechBackdrop";
 import { ThemeColorSync } from "@/components/site/ThemeColorSync";
 import { OWNER } from "@/data";
+import { BOOT_INLINE_SCRIPT } from "@/lib/boot";
 import "./globals.css";
 
 const manrope = localFont({
@@ -93,6 +101,14 @@ export default function RootLayout({
       <body
         className={`${manrope.className} bg-background text-foreground antialiased`}
       >
+        <script dangerouslySetInnerHTML={{ __html: BOOT_INLINE_SCRIPT }} />
+        <div
+          hidden
+          dangerouslySetInnerHTML={{
+            __html:
+              "<!-- 👀 Source reader! Flag 1 of 6: KRG{v13w_s0urc3_l1k3_4_pr0} · submit it in the terminal (press `) -->",
+          }}
+        />
         <div
           aria-hidden="true"
           className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
@@ -101,7 +117,7 @@ export default function RootLayout({
           <div className="ambient-orb ambient-orb-b orb-drift-b" />
           <div className="ambient-orb ambient-orb-c orb-drift-c" />
         </div>
-        <CursorGlow />
+        <TechBackdrop />
         <ScrollProgress />
         <ThemeProvider
           attribute="class"
@@ -122,7 +138,14 @@ export default function RootLayout({
           </div>
           <FixedFooter />
           <Dock />
+          <SystemHud />
+          <CtfTracker />
+          <Robot />
+          <Terminal />
+          <Toaster />
+          <EasterEggs />
         </ThemeProvider>
+        <BootIntro />
       </body>
     </html>
   );

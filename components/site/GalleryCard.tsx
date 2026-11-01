@@ -34,6 +34,17 @@ export function GalleryCard({
           </div>
           <span className="cover-glare" />
           <span className="cover-shine" />
+          <span className="decrypt">
+            <span className="decrypt__label">
+              <span className="decrypt__a">
+                decrypting {name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}.enc
+              </span>
+              <span className="decrypt__b">access granted ✓</span>
+            </span>
+            <span className="decrypt__bar">
+              <i />
+            </span>
+          </span>
         </div>
         <div className="mt-3 flex items-start justify-between gap-4 px-0.5">
           <div>

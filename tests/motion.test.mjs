@@ -18,7 +18,7 @@ async function animationDurations(page, selector) {
   );
 }
 
-test("shell adds route entry, progress, cursor glow, and drifting light", async () => {
+test("shell adds route entry, progress, and drifting light", async () => {
   await withPage("/", { width: 1440, height: 960 }, async (page) => {
     assert.match(
       await animationName(page, "[data-page-transition]"),
@@ -66,44 +66,6 @@ test("shell adds route entry, progress, cursor glow, and drifting light", async 
     assert.notEqual(afterScroll, before);
     assert.notEqual(afterScroll, "none");
 
-    assert.equal(
-      await page.$$eval('[data-testid="cursor-glow"]', (els) => els.length),
-      1
-    );
-    await page.evaluate(() => {
-      window.dispatchEvent(
-        new PointerEvent("pointermove", {
-          clientX: 420,
-          clientY: 320,
-          bubbles: true,
-          pointerType: "mouse",
-        })
-      );
-    });
-    await page.waitForFunction(
-      () =>
-        document.querySelector('[data-testid="cursor-glow"]')?.dataset
-          .active === "true"
-    );
-    await page.evaluate(() => {
-      window.dispatchEvent(
-        new PointerEvent("pointermove", {
-          clientX: 640,
-          clientY: 480,
-          bubbles: true,
-          pointerType: "mouse",
-        })
-      );
-      window.dispatchEvent(new Event("blur"));
-    });
-    await new Promise((resolve) => setTimeout(resolve, 120));
-    assert.equal(
-      await page.$eval(
-        '[data-testid="cursor-glow"]',
-        (el) => el.dataset.active
-      ),
-      "false"
-    );
     assert.deepEqual(page.__errors, []);
   });
 });
@@ -116,6 +78,18 @@ test("hero, gallery, and tagline respond with playful motion", async () => {
       "hero should have decorative sparks"
     );
 
+    // The gallery now sits below the exploded-view section, so bring it into
+    // view and let its scroll reveal fire before checking card motion.
+    await page.$eval("[data-gallery-item]", (el) =>
+      el.scrollIntoView({ block: "start", behavior: "instant" })
+    );
+    await page.waitForFunction(
+      () =>
+        document
+          .querySelector("[data-gallery-item]")
+          ?.closest("[data-reveal]")
+          ?.getAttribute("data-shown") === "true"
+    );
     const cardAnimation = await animationName(page, "[data-gallery-item]");
     assert.match(cardAnimation, /card-in/);
     const delays = await page.$$eval("[data-gallery-item]", (els) =>
@@ -228,13 +202,9 @@ test("reduced motion removes movement and keeps content visible", async () => {
         document.querySelector("[data-gallery-item]")
       ).opacity,
       headingOpacity: getComputedStyle(document.querySelector("h1")).opacity,
-      glowDisplay: getComputedStyle(
-        document.querySelector('[data-testid="cursor-glow"]')
-      ).display,
     }));
     assert.equal(state.cardOpacity, "1");
     assert.equal(state.headingOpacity, "1");
-    assert.equal(state.glowDisplay, "none");
 
     const box = await page.$eval('[data-testid="gallery-card"]', (el) => {
       const rect = el.getBoundingClientRect();
@@ -285,6 +255,54 @@ test("copy and form controls animate their state changes", async () => {
         getComputedStyle(el).animationName
       ),
       /shake-in/
+    );
+    assert.deepEqual(page.__errors, []);
+  });
+});
+
+test("tech layer: backdrop, scramble headline, and exploded view", async () => {
+  await withPage("/", { width: 1440, height: 960 }, async (page) => {
+    assert.equal(
+      await page.$$eval('[data-testid="tech-backdrop"] canvas', (els) => els.length),
+      1
+    );
+    assert.notEqual(await animationName(page, ".tech-scan"), "none");
+
+    // Boot screen is skipped under automation; scramble resolves to real text.
+    assert.equal(
+      await page.evaluate(() => document.documentElement.dataset.boot ?? null),
+      null
+    );
+    await page.waitForFunction(() => {
+      const visible = document.querySelector("h1 [data-scramble]");
+      return visible?.textContent?.includes("I’m Ramzy");
+    });
+    assert.match(
+      await page.$eval("h1 .sr-only", (el) => el.textContent),
+      /I’m Ramzy/
+    );
+
+    const stage = '[data-testid="exploded-stack"] .xs-stage';
+    await page.$eval(stage, (el) => el.scrollIntoView({ block: "center" }));
+    assert.equal(await page.$eval(stage, (el) => el.dataset.open), "false");
+    await page.click('[data-testid="exploded-stack"] button[aria-pressed]');
+    assert.equal(await page.$eval(stage, (el) => el.dataset.open), "true");
+
+    const before = await page.$eval(stage, (el) => el.style.getPropertyValue("--rz"));
+    const box = await page.$eval(stage, (el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    });
+    await page.mouse.move(box.x, box.y);
+    await page.mouse.down();
+    await page.mouse.move(box.x + 120, box.y, { steps: 8 });
+    await page.mouse.up();
+    await page.waitForFunction(
+      (selector, prev) =>
+        document.querySelector(selector)?.style.getPropertyValue("--rz") !== prev,
+      {},
+      stage,
+      before
     );
     assert.deepEqual(page.__errors, []);
   });

@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/site/icons";
+import { FirewallGame } from "@/components/site/FirewallGame";
 import { PageIntro } from "@/components/site/PageIntro";
 
 export default function NotFound() {
   return (
     <main id="main" className="pt-10 md:pt-20">
       <PageIntro
-        badge="404"
+        badge="404 · route compromised"
         lead="This page isn’t here."
         mute="Let’s get you back."
-        subtitle="The link may be old, or the page may have moved."
+        subtitle="The link may be old, or the page may have moved. Or something got in."
+        glitch
       >
         <Link
           href="/"
@@ -22,6 +24,7 @@ export default function NotFound() {
           />
         </Link>
       </PageIntro>
+      <FirewallGame />
     </main>
   );
 }
